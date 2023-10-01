@@ -59,9 +59,6 @@
     - Bean Validation API
     - Kafka
 - PostgreSQL
-- Docker
-- MinIO
-- React/Angular 
 
 ## 2.2 Интерфейс пользователя
 
