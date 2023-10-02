@@ -54,7 +54,6 @@
     - Security
     - MVC
     - Mail Sender
-    - Eureka discovery service
     - JPA
     - Bean Validation API
     - Kafka
