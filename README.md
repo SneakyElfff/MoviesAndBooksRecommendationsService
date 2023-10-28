@@ -5,6 +5,7 @@ This app is intended for helping in search of movies to watch or books to read.
 ## The structure of the project:
 - [documentation (requirements);](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/tree/main/Documentation)
 - [mockups (user interface);](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/tree/main/Mockups)
+- [diagrams (object-oriented design);](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/tree/fe653944651b70a479510b172d3d19fce9f8d327/Diagrams)
 
 ## App characteristics:
 - type: web;
