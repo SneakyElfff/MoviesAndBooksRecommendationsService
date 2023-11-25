@@ -78,6 +78,14 @@
     #accountButton {
       margin-left: auto;
     }
+
+    input {
+      padding: 8px;
+      font-size: 1em;
+      margin-top: 20px;
+      border: 1px solid #ccc; /* Рамка вокруг поля ввода */
+      border-radius: 4px;
+    }
   </style>
 </head>
 
@@ -94,6 +102,11 @@
   <button id="accountButton">Account</button>
 </div>
 <hr class="line2">
+<input type="text" id="movieTitle" placeholder="Enter movie title">
+<button id="searchButton">Search</button>
+
+<!-- Вывода информации о фильме -->
+<div id="movieInfo"></div>
 
 <script>    //JavaScript
 document.getElementById("recommendationsButton").addEventListener("click", function() {
@@ -106,6 +119,26 @@ document.getElementById("booksButton").addEventListener("click", function() {
 
 document.getElementById("accountButton").addEventListener("click", function() {
   window.location.href = "/account";
+});
+
+document.getElementById("searchButton").addEventListener("click", function() {
+  var movieTitle = document.getElementById("movieTitle").value;
+
+  //выполнение fetch-запроса к вашему эндпоинту на сервере
+  fetch(`/searchMovie?movieTitle=${encodeURIComponent(movieTitle)}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(data => {
+            //обработка ответа от сервера
+            document.getElementById("movieInfo").innerHTML = data;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
 });
 </script>
 </body>
