@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            font-family: 'American Typewriter', sans-serif;
+        }
+
+        .grey-text {
+            color: dimgrey;
+        }
+
+        /* Заголовок */
+        h1 {
+            margin-top: 5vh;
+            font-size: 3em;
+            color: black; /* Чтобы сделать заголовок черным цветом */
+        }
+
+        p {
+            line-height: 0.5; /* Отступ между строками */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #ffffff;
+            color: darkblue;
+            border: none;
+            cursor: pointer;
+        }
+
+        label {
+            font-size: 1em;
+            margin-top: 10px;
+            display: block; /* Отображать метку как блочный элемент */
+        }
+
+        input {
+            padding: 8px;
+            font-size: 1em;
+            margin-top: 10px;
+            border: 1px solid #ccc; /* Рамка вокруг поля ввода */
+            border-radius: 4px;
+        }
+
+        .remember-container {
+            display: flex;
+            align-items: center;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        #rememberCheckbox {
+            margin-left: 5px;
+            vertical-align: text-before-edge;
+            horiz-align: center;
+        }
+
+        /* Стиль для метки чекбокса */
+        #rememberCheckboxLabel {
+            margin-left: 5px;
+            vertical-align: middle;
+            horiz-align: center;
+        }
+
+        /* Стили для рамки */
+        .button-frame {
+            border: 2px solid darkblue;
+            background: darkblue;
+            color: #fff;
+            border-radius: 8px;
+            margin-top: 10px;
+            width: fit-content; /* Автоматическое определение ширины */
+            display: inline-block;
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+<h1>Sign In</h1>
+<p>Welcome back!</p>
+<p><span class="grey-text">Don't have an account?</span> <button id="SignUp">Sign Up</button></p>
+<label for="email">Email</label>
+<input type="text" id="email" placeholder="">
+<label for="password">Password</label>
+<input type="text" id="password" placeholder="">
+
+<div class="remember-container">
+    <label id="rememberCheckboxLabel" for="rememberCheckbox">Remember Me</label>
+    <input type="checkbox" id="rememberCheckbox">
+</div>
+
+<!-- Рамка с кнопкой -->
+<div class="button-frame">
+     <button id="SignIn">Sign In</button>
+</div>
+
+
+
+
+    <script>
+        document.getElementById("signInButton").addEventListener("click", function() {
+            alert("Button Clicked!");
+        });
+    </script>
+
+</body>
+</html>
