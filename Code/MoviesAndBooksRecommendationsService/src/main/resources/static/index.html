@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Cup of Tea</title>
+  <title>Your cup of tea</title>
   <style>
     body {
       margin: 0;
@@ -16,21 +16,75 @@
       text-align: center;
     }
 
+    /* Заголовок */
     h1 {
-      margin-top: 5vh; /* Задаем отступ сверху в 20% высоты окна */
-      font-size: 3em; /* Измените это значение на нужный вам размер шрифта */
+      margin-top: 5vh;
+      font-size: 3em;
     }
 
-    hr {
+    /* Первая разделительная линия */
+    .line1 {
       width: 100%;
-      margin-top: 20px;
-      margin-bottom: 20px;
-      border: 4px solid #000000; /* Цвет и стиль линии */
+      margin-top: 15px;
+      margin-bottom: 0;
+      border: 3px solid #000000;
+    }
+
+    /* Вторая разделительная линия */
+    .line2 {
+      width: 100%;
+      margin-top: 0;
+      margin-bottom: 10px;
+      border: 3px solid #000000;
+    }
+
+    /* Изображение */
+    .image-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .image-container img {
+      width: 100px;
+      height: auto;
+    }
+
+    .button-container {
+      margin-top: 0;
+    }
+
+    button {
+      padding: 10px 70px;
+      font-size: 1.4em; /* Измените значение размера шрифта */
+      background-color: #ffffff;
+      color: black;
+      border-top-style: none;
+      border-right: 4px solid black;
+      border-bottom-style: none;
+      border-left: 4px solid black;
+      border-radius: 0;
+      cursor: pointer;
     }
   </style>
 </head>
+
 <body>
-<h1>Your cup of tea</h1>
-<hr>
+<div class="image-container">
+  <img src="" alt="Left Image">
+  <h1>Your cup of tea</h1>
+  <img src="" alt="Right Image">
+</div>
+<hr class="line1">
+<div class="button-container">
+  <button id="moviesButton">Movies</button>
+</div>
+<hr class="line2">
+
+<script>    //JavaScript
+  document.getElementById("moviesButton").addEventListener("click", function() {
+    window.location.href = "/movies";
+  });
+</script>
 </body>
 </html>
