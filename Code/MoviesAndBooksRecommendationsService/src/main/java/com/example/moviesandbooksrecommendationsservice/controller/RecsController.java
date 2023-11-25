@@ -11,7 +11,12 @@ public class RecsController {
     }
 
     @GetMapping("/movies")
-    public String getRecommendations() {
+    public String movies() {
         return "movies.html";
+    }
+
+    @GetMapping("/books")
+    public String books() {
+        return "books.html";
     }
 }

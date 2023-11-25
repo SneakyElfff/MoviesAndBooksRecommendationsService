@@ -14,6 +14,7 @@
       align-items: center;
       justify-content: flex-start;
       text-align: center;
+      font-family: 'American Typewriter', sans-serif;
     }
 
     /* Заголовок */
@@ -26,14 +27,14 @@
     .line1 {
       width: 100%;
       margin-top: 15px;
-      margin-bottom: 0px;
+      margin-bottom: 0;
       border: 3px solid #000000;
     }
 
     /* Вторая разделительная линия */
     .line2 {
       width: 100%;
-      margin-top: 0px;
+      margin-top: 0;
       margin-bottom: 10px;
       border: 3px solid #000000;
     }
@@ -51,39 +52,48 @@
     }
 
     .button-container {
-      margin-top: 0px;
+      margin-top: 0;
     }
 
     button {
       padding: 10px 70px;
-      font-size: 1.4em; /* Измените значение размера шрифта */
+      font-size: 1.4em;
       background-color: #ffffff;
       color: black;
       border-top-style: none;
       border-right: 4px solid black;
       border-bottom-style: none;
       border-left: 4px solid black;
-      border-radius: 0px;
+      border-radius: 0;
       cursor: pointer;
+    }
+
+    #booksButton {
+      margin-left: -8px; /* убрать отступ между кнопками */
     }
   </style>
 </head>
 
 <body>
 <div class="image-container">
-  <img src="/Users/nina/Library/CloudStorage/OneDrive-Personal/Документы/Uni/ЖЦРПО/Mockups/film-reel.png" alt="Left Image">
+  <img src="" alt="Left Image">
   <h1>Your cup of tea</h1>
-  <img src="/Users/nina/Library/CloudStorage/OneDrive-Personal/Документы/Uni/ЖЦРПО/Mockups/open-book.png" alt="Right Image">
+  <img src="" alt="Right Image">
 </div>
 <hr class="line1">
 <div class="button-container">
   <button id="moviesButton">Movies</button>
+  <button id="booksButton">Books</button>
 </div>
 <hr class="line2">
 
 <script>    //JavaScript
   document.getElementById("moviesButton").addEventListener("click", function() {
     window.location.href = "/movies";
+  });
+
+  document.getElementById("booksButton").addEventListener("click", function() {
+    window.location.href = "/books";
   });
 </script>
 </body>
