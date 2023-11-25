@@ -32,13 +32,26 @@
             line-height: 0.5; /* Отступ между строками */
         }
 
+        .button-container {
+            margin-top: 10px;
+            width: fit-content; /* Автоматическое определение ширины */
+            display: inline-block;
+        }
+
         button {
             padding: 10px 20px;
             font-size: 1em;
+            cursor: pointer;
+            border: 2px solid darkblue;
+            background: darkblue;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        #SignUp {
             background-color: #ffffff;
             color: darkblue;
             border: none;
-            cursor: pointer;
         }
 
         label {
@@ -74,20 +87,6 @@
             vertical-align: middle;
             horiz-align: center;
         }
-
-        /* Стили для рамки */
-        .button-frame {
-            border: 2px solid darkblue;
-            background: darkblue;
-            color: #fff;
-            border-radius: 8px;
-            margin-top: 10px;
-            width: fit-content; /* Автоматическое определение ширины */
-            display: inline-block;
-        }
-
-
-
     </style>
 </head>
 
@@ -105,17 +104,13 @@
     <input type="checkbox" id="rememberCheckbox">
 </div>
 
-<!-- Рамка с кнопкой -->
-<div class="button-frame">
-     <button id="SignIn">Sign In</button>
+<div class="button-container">
+    <button id="signInButton">Sign In</button>
 </div>
-
-
-
 
     <script>
         document.getElementById("signInButton").addEventListener("click", function() {
-            alert("Button Clicked!");
+            alert("Success!");
         });
     </script>
 

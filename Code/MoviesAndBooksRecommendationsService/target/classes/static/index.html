@@ -42,8 +42,8 @@
     /* Изображение */
     .image-container {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
     }
 
     .image-container img {
@@ -53,6 +53,9 @@
 
     .button-container {
       margin-top: 0;
+      display: flex;
+      justify-content: space-between; /* Равномерное распределение пространства между элементами */
+      width: 100%;
     }
 
     button {
@@ -71,19 +74,24 @@
     #booksButton {
       margin-left: -8px; /* убрать отступ между кнопками */
     }
+
+    #accountButton {
+      margin-left: auto;
+    }
   </style>
 </head>
 
 <body>
 <div class="image-container">
-  <img src="" alt="Left Image">
+  <img src="images/LeftImage.png" alt="Film reel" style="position: relative; right: 380px; width:150px;">
   <h1>Your cup of tea</h1>
-  <img src="" alt="Right Image">
+  <img src="images/RightImage.jpg" alt="Open book" style="position: relative; left: 380px; width:150px;">
 </div>
 <hr class="line1">
 <div class="button-container">
   <button id="moviesButton">Movies</button>
   <button id="booksButton">Books</button>
+  <button id="accountButton">Account</button>
 </div>
 <hr class="line2">
 
@@ -95,6 +103,10 @@
   document.getElementById("booksButton").addEventListener("click", function() {
     window.location.href = "/books";
   });
+
+document.getElementById("accountButton").addEventListener("click", function() {
+  window.location.href = "/account";
+});
 </script>
 </body>
 </html>
