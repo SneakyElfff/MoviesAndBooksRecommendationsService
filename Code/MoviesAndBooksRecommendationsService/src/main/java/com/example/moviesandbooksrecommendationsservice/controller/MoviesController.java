@@ -48,7 +48,6 @@ public class MoviesController {
 
             String url_staff = "https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=" + id;
 
-            HttpHeaders headers_staff = new HttpHeaders();
             headers.set("X-API-KEY", "a48fa905-cbc9-4031-ac7d-be116c3a1a53");
             headers.set("Accept", "application/json");
 
