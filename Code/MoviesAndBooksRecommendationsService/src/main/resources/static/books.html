@@ -78,6 +78,14 @@
     #accountButton {
       margin-left: auto;
     }
+
+    input {
+      padding: 8px;
+      font-size: 1em;
+      margin-top: 20px;
+      border: 1px solid #ccc; /* Рамка вокруг поля ввода */
+      border-radius: 4px;
+    }
   </style>
 </head>
 
@@ -94,6 +102,12 @@
   <button id="accountButton">Account</button>
 </div>
 <hr class="line2">
+<input type="text" id="bookTitle" placeholder="Enter book title">
+<input type="text" id="authorName" placeholder="Enter author name">
+<button id="searchButton">Search</button>
+
+<!-- Вывода информации о книге -->
+<div id="bookInfo"></div>
 
 <script>    //JavaScript
 document.getElementById("recommendationsButton").addEventListener("click", function() {
@@ -106,6 +120,37 @@ document.getElementById("moviesButton").addEventListener("click", function() {
 
 document.getElementById("accountButton").addEventListener("click", function() {
   window.location.href = "/account";
+});
+
+document.getElementById("searchButton").addEventListener("click", function() {
+  var bookTitle = document.getElementById("bookTitle").value;
+  var authorName = document.getElementById("authorName").value;
+
+  if (bookTitle.trim() === "") {
+    console.log("Book title is empty. Please enter a title.");
+    return ;
+  }
+
+  if (authorName.trim() === "") {
+    console.log("Author name is empty. Please enter a name.");
+    return ;
+  }
+
+  //выполнение fetch-запроса к эндпоинту на сервере
+  fetch(`/searchBook?bookTitle=${encodeURIComponent(bookTitle)}&authorName=${encodeURIComponent(authorName)}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(data => {
+            //обработка ответа от сервера
+            document.getElementById("bookInfo").innerHTML = data;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
 });
 </script>
 </body>
