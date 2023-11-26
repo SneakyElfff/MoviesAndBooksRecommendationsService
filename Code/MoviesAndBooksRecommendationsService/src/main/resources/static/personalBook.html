@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Details</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      font-family: 'American Typewriter', sans-serif;
+    }
+
+    /* Заголовок */
+    h1 {
+      margin-top: 5vh;
+      font-size: 3em;
+    }
+
+    /* Первая разделительная линия */
+    .line1 {
+      width: 100%;
+      margin-top: 15px;
+      margin-bottom: 0;
+      border: 3px solid #000000;
+    }
+
+    /* Вторая разделительная линия */
+    .line2 {
+      width: 100%;
+      margin-top: 0;
+      margin-bottom: 10px;
+      border: 3px solid #000000;
+    }
+
+    /* Изображение */
+    .image-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .image-container img {
+      width: 100px;
+      height: auto;
+    }
+
+    .button-container {
+      margin-top: 0;
+      display: flex;
+      justify-content: space-between; /* Равномерное распределение пространства между элементами */
+      width: 100%;
+    }
+
+    button {
+      padding: 10px 70px;
+      font-size: 1.4em;
+      background-color: #ffffff;
+      color: black;
+      border-top-style: none;
+      border-right: 4px solid black;
+      border-bottom-style: none;
+      border-left: 4px solid black;
+      border-radius: 0;
+      cursor: pointer;
+    }
+
+    #booksButton {
+      margin-left: -8px; /* убрать отступ между кнопками */
+    }
+
+    #accountButton {
+      margin-left: auto;
+    }
+
+    #title {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: right;
+      padding: 0;
+      margin: 0;
+    }
+
+    #authors {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: right;
+      padding: 0;
+      margin: 0;
+    }
+
+    #publishedDate {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: right;
+      padding: 0;
+      margin: 0;
+    }
+
+    #categories {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: right;
+      padding: 0;
+      margin: 0;
+    }
+
+    #publisher {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: right;
+      padding: 0;
+      margin: 0;
+    }
+
+    #description {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: left;
+      padding: 0;
+      margin: 0;
+    }
+
+    #pageCount {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: right;
+      padding: 0;
+      margin: 0;
+    }
+
+    #maturityRating {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: right;
+      padding: 0;
+      margin: 0;
+    }
+
+    #likeButton {
+      padding: 10px;
+      font-size: 1.4em;
+      background-color: #ffffff;
+      color: black;
+      border: 2px solid #000000;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px; /* Добавленный отступ сверху */
+    }
+
+    #likeButton:hover {
+      background-color: #eee;
+    }
+
+    /*#year, #genres, #alternativeName, #director, #movieLength, #description {*/
+    /*  margin: 0;*/
+    /*  padding: 1px 0;*/
+    /*}*/
+
+  </style>
+</head>
+
+<body>
+<div class="image-container">
+  <img src="images/LeftImage.png" alt="Film reel" style="position: relative; right: 380px; width:150px;">
+  <h1>Your cup of tea</h1>
+  <img src="images/RightImage.jpg" alt="Open book" style="position: relative; left: 380px; width:150px;">
+</div>
+<hr class="line1">
+<div class="button-container">
+  <button id="moviesButton">Movies</button>
+  <button id="booksButton">Books</button>
+  <button id="accountButton">Account</button>
+</div>
+<hr class="line2">
+
+<div id="thumbnail">
+  <img id="thumbnailImage" alt="Book Thumbnail" style="position: relative; right: 380px;">
+</div>
+
+<div id="title"></div>
+<div id="authors"></div>
+<div id="publishedDate"></div>
+<div id="categories"></div>
+<div id="publisher"></div>
+<div id="pageCount"></div>
+<div id="description"></div>
+<div id="maturityRating"></div>
+<button id="likeButton" onclick="toggleLike()">❤ Like</button>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Retrieve the movie information from the query parameter
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var bookData = urlParams.get("book");
+
+    // Parse the movie information
+    var book = JSON.parse(decodeURIComponent(bookData));
+
+    // Display the book information on the page
+    displayMovieInfo(book);
+  });
+
+  function displayMovieInfo(book) {
+
+    var titleElement = document.getElementById("title");
+    var authorsElement = document.getElementById("authors");
+    var publishedDateElement = document.getElementById("publishedDate");
+    var categoriesElement = document.getElementById("categories");
+    var publisherElement = document.getElementById("publisher");
+    var maturityRatingElement = document.getElementById("maturityRating");
+    var pageCountElement = document.getElementById("pageCount");
+    var descriptionElement = document.getElementById("description");
+    var urlElement = document.getElementById("thumbnailImage");
+
+    // Update HTML content
+    titleElement.textContent = `Title: ${book.title}`;
+    authorsElement.textContent = `Authors: ${book.authors.join(", ")}`;
+    publisherElement.textContent = `Publisher: ${book.publisher}`;
+    publishedDateElement.textContent = `PublishedDate: ${book.publishedDate}`;
+    categoriesElement.textContent = `Categories:  ${book.categories.join(", ")}`;
+    maturityRatingElement.textContent = `Maturity rating: ${book.maturityRating}`;
+    pageCountElement.textContent = `Page count: ${book.pageCount}`;
+    descriptionElement.textContent = `Description: ${book.description}`;
+    urlElement.src = book.imageLinks.thumbnail;
+  }
+
+  var isLiked = false;
+
+  function toggleLike() {
+    isLiked = !isLiked;
+    updateLikeButton();
+  }
+
+  function updateLikeButton() {
+    var likeButton = document.getElementById("likeButton");
+    likeButton.textContent = isLiked ? "❤ Liked" : "❤ Like";
+  }
+
+  document.getElementById("moviesButton").addEventListener("click", function() {
+    window.location.href = "/movies";
+  });
+
+  document.getElementById("booksButton").addEventListener("click", function() {
+    window.location.href = "/books";
+  });
+
+  document.getElementById("accountButton").addEventListener("click", function() {
+    window.location.href = "/account";
+  });
+
+</script>
+</body>
+</html>

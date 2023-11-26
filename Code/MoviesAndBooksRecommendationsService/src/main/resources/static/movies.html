@@ -135,11 +135,11 @@ document.getElementById("searchButton").addEventListener("click", function() {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.text();
+            return response.json();
           })
-          .then(data => {
-            //обработка ответа от сервера
-            document.getElementById("movieInfo").innerHTML = data;
+          .then(movie => {
+            // Redirect to the new page with the movie information as a query parameter
+            window.location.href = `/personalMovie.html?movie=${encodeURIComponent(JSON.stringify(movie))}`;
           })
           .catch(error => {
             console.error('Error:', error);

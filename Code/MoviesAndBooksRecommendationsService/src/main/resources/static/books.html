@@ -142,11 +142,11 @@ document.getElementById("searchButton").addEventListener("click", function() {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.text();
+            return response.json();
           })
-          .then(data => {
+          .then(book => {
             //обработка ответа от сервера
-            document.getElementById("bookInfo").innerHTML = data;
+            window.location.href = `/personalBook.html?book=${encodeURIComponent(JSON.stringify(book))}`;
           })
           .catch(error => {
             console.error('Error:', error);
