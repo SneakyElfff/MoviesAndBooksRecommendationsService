@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class MoviesController {
@@ -21,21 +23,19 @@ public class MoviesController {
 
     @GetMapping("/searchMovie")
     public ResponseEntity<Movie> getMovieInfo(@RequestParam String movieTitle) {
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate template = new RestTemplate();
+
         String url = KINOPOISK_API_URL + movieTitle;
 
-        // Создайте экземпляр HttpHeaders и установите токен
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-API-KEY", "D54AW5N-TKP4NKF-K1WTGKY-XD5Y3JS");
         headers.set("Accept", "application/json");
 
-        // Создайте экземпляр HttpEntity с заголовками
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        // Выполните запрос с использованием HttpEntity
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, entity, String.class);
 
-        // Преобразование JSON в объект Movie
+        //преобразование JSON в объект Movie
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode root = objectMapper.readTree(response.getBody());
@@ -43,6 +43,38 @@ public class MoviesController {
             JsonNode movieNode = root.path("docs").get(0);     //получить первый объект фильма из массива "docs"
 
             Movie movie = objectMapper.treeToValue(movieNode, Movie.class);
+
+            String id = String.valueOf(movieNode.path("id").asLong());
+
+            String url_staff = "https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=" + id;
+
+            HttpHeaders headers_staff = new HttpHeaders();
+            headers.set("X-API-KEY", "a48fa905-cbc9-4031-ac7d-be116c3a1a53");
+            headers.set("Accept", "application/json");
+
+            HttpEntity<String> entity_staff = new HttpEntity<>(headers);
+
+            ResponseEntity<String> response_staff = template.exchange(url_staff, HttpMethod.GET, entity_staff, String.class);
+
+            JsonNode root_staff = objectMapper.readTree(response_staff.getBody());
+
+            List<String> actorsList = new ArrayList<>();
+            int actorsCount = 0;
+
+            for (JsonNode staffNode : root_staff) {
+                if ("DIRECTOR".equals(staffNode.path("professionKey").asText())) {
+                    movie.setDirector(staffNode.path("nameEn").asText());
+                }
+
+                if ("ACTOR".equals(staffNode.path("professionKey").asText())) {
+                    actorsList.add(staffNode.path("nameEn").asText());
+                    actorsCount++;
+                    if (actorsCount >= 5) {
+                        break;
+                    }
+                }
+            }
+            movie.setActors(actorsList);
 
             logger.info("Deserialized movie: {}", movie);
             return ResponseEntity.ok(movie);
