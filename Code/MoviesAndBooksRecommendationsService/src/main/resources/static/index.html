@@ -94,8 +94,56 @@
   <button id="accountButton">Account</button>
 </div>
 <hr class="line2">
+<div id="movieInfo1"></div>
+<div id="movieInfo2"></div>
+<div id="movieInfo3"></div>
 
-<script>    //JavaScript
+<div id="bookInfo1"></div>
+<div id="bookInfo2"></div>
+<div id="bookInfo3"></div>
+<script>
+  //выполнить после полной загрузки страницы
+  document.addEventListener("DOMContentLoaded", function () {
+    //3 раза запросить фильм
+    for (let i=1; i<=3; i++) {
+      const movieInfoId = `movieInfo${i}`;
+
+      fetch(`/recommendMovies`)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+              })
+              .then(data => {
+                // Update the corresponding movieInfo element with the response
+                document.getElementById(movieInfoId).innerHTML = data;
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+    }
+
+    for (let i=1; i<=3; i++) {
+      const bookInfoId = `bookInfo${i}`;
+
+      fetch(`/recommendBooks`)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+              })
+              .then(data => {
+                // Update the corresponding movieInfo element with the response
+                document.getElementById(bookInfoId).innerHTML = data;
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+    }
+  });
+
   document.getElementById("moviesButton").addEventListener("click", function() {
     window.location.href = "/movies";
   });

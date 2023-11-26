@@ -11,6 +11,7 @@ import java.util.List;
 public class Movie {
     @JsonProperty("id")
     private int id;
+
     @JsonProperty("alternativeName")
     private String alternativeName;
 
