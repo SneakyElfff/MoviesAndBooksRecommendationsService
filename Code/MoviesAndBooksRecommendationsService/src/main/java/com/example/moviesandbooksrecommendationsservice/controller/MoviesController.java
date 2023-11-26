@@ -39,12 +39,13 @@ public class MoviesController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode root = objectMapper.readTree(response.getBody());
+            JsonNode movie_node = root.path("docs").get(0);     //получить первый объект фильма из массива "docs"
 
-            JsonNode movieNode = root.path("docs").get(0);     //получить первый объект фильма из массива "docs"
+            Movie movie = objectMapper.treeToValue(movie_node, Movie.class);
+            if (movie_node == null)
+                return ResponseEntity.ok(movie);
 
-            Movie movie = objectMapper.treeToValue(movieNode, Movie.class);
-
-            String id = String.valueOf(movieNode.path("id").asLong());
+            String id = String.valueOf(movie_node.path("id").asLong());
 
             String url_staff = "https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=" + id;
 
@@ -60,13 +61,13 @@ public class MoviesController {
             List<String> actorsList = new ArrayList<>();
             int actorsCount = 0;
 
-            for (JsonNode staffNode : root_staff) {
-                if ("DIRECTOR".equals(staffNode.path("professionKey").asText())) {
-                    movie.setDirector(staffNode.path("nameEn").asText());
+            for (JsonNode staff : root_staff) {
+                if ("DIRECTOR".equals(staff.path("professionKey").asText())) {
+                    movie.setDirector(staff.path("nameEn").asText());
                 }
 
-                if ("ACTOR".equals(staffNode.path("professionKey").asText())) {
-                    actorsList.add(staffNode.path("nameEn").asText());
+                if ("ACTOR".equals(staff.path("professionKey").asText())) {
+                    actorsList.add(staff.path("nameEn").asText());
                     actorsCount++;
                     if (actorsCount >= 5) {
                         break;

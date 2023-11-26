@@ -124,7 +124,12 @@ document.getElementById("accountButton").addEventListener("click", function() {
 document.getElementById("searchButton").addEventListener("click", function() {
   var movieTitle = document.getElementById("movieTitle").value;
 
-  //выполнение fetch-запроса к вашему эндпоинту на сервере
+  if (movieTitle.trim() === "") {
+    console.log("Movie title is empty. Please enter a title.");
+    return ;
+  }
+
+  //выполнение fetch-запроса к эндпоинту на сервере
   fetch(`/searchMovie?movieTitle=${encodeURIComponent(movieTitle)}`)
           .then(response => {
             if (!response.ok) {
