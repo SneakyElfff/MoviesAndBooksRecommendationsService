@@ -32,21 +32,12 @@
 ### API кинематографических и литературных данных
 
 Для получения актуальной информации о фильмах и книгах, включая описания, актерский состав, жанры и другие характеристики используются ресурсы сервисов:
-- Rotten Tomatoes 
 - Кинопоиск 
-- Goodreads
+- Google Books
 
 ### Аутентификация и авторизация
 
 Для обеспечения безопасности и управления доступом пользователей к приложению используется сервис аутентификации OAuth.
-
-### Сервисы рекомендаций
-
-Для создания алгоритмов рекомендаций и анализа пользовательских препочтений используются библиотеки машинного обучения, такие как Scikit-learn, TensorFlow, также системы коллаборативной фильтрации.
-
-### Сервисы уведомлений и коммуникации
-
-Для отправки уведомлений пользователям о новых рекомендациях, обновлениях и других событиях используется сервис Mail Sender.
 
 ### Стек технологий
 - Spring Boot
@@ -93,7 +84,7 @@
 
 ### Страница фильма/книги
 
-![Страница фильма/книги](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/blob/main/Mockups/%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0%20%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%D0%B0%3A%D0%BA%D0%BD%D0%B8%D0%B3%D0%B8.png)
+![Страница фильма/книги](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/blob/c16c352d808506ab090f1f63dfd8a3b73e02e16b/Mockups/%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0%20%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%D0%B0_%D0%BA%D0%BD%D0%B8%D0%B3%D0%B8.png)
 
 ### Фильмы
 
@@ -101,7 +92,7 @@
 
 ### Страница фильма/книги интерактивная
 
-![Страница фильма/книги интерактивная](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/blob/main/Mockups/%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0%20%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%D0%B0%3A%D0%BA%D0%BD%D0%B8%D0%B3%D0%B8_%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%B2%D0%BD%D0%B0%D1%8F.png)
+![Страница фильма/книги интерактивная](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/blob/5239264e0fbea432e828a4180c6ae51aad251b90/Mockups/%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0_%D1%84%D0%B8%D0%BB%D1%8C%D0%BC%D0%B0_%D0%BA%D0%BD%D0%B8%D0%B3%D0%B8_%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D0%B2%D0%BD%D0%B0%D1%8F.png)
 
 ## 2.3 Характеристики пользователей
 
