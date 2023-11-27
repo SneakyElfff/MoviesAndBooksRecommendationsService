@@ -15,19 +15,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login**", "/").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/secure/**").authenticated()
+                        .anyRequest().permitAll()
                 )
                 .oauth2Login(Customizer.withDefaults())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/signOut")
+                        .logoutSuccessUrl("/main")
                         .invalidateHttpSession(true)
-                )
-                .formLogin(login -> login
-                        .loginPage("/login")
-                        .permitAll()
                 );
+
         return http.build();
     }
 }

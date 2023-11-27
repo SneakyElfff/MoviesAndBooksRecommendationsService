@@ -24,10 +24,8 @@ public class RecsController {
     @GetMapping("/signIn")
     public String signIn(Authentication authentication) {
         if (authentication != null) {
-            // Вход выполнен, перейти на страницу аккаунта
-            return "redirect:/account";
+            return "redirect:/account";    //вход выполнен, перейти на страницу аккаунта
         }
-        // Вход не выполнен, оставить на странице входа
         return "signIn.html";
     }
 
