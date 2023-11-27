@@ -1,5 +1,6 @@
 package com.example.moviesandbooksrecommendationsservice.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -20,8 +21,16 @@ public class RecsController {
         return "books.html";
     }
 
-    @GetMapping("/account")
-    public String account() {
-        return "account.html";
+    @GetMapping("/signIn")
+    public String signIn(Authentication authentication) {
+        if (authentication != null) {
+            // Вход выполнен, перейти на страницу аккаунта
+            return "redirect:/account";
+        }
+        // Вход не выполнен, оставить на странице входа
+        return "signIn.html";
     }
+
+    @GetMapping("/account")
+    public String account() { return "account.html"; }
 }
