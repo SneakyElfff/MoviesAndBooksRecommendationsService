@@ -1,4 +1,4 @@
-package com.example.moviesandbooksrecommendationsservice.controller;
+package com.example.moviesandbooksrecommendationsservice.controllers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;

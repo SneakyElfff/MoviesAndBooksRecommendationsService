@@ -1,4 +1,4 @@
-package com.example.moviesandbooksrecommendationsservice.controller;
+package com.example.moviesandbooksrecommendationsservice.controllers;
 
 import com.example.moviesandbooksrecommendationsservice.entities.Movie;
 import com.fasterxml.jackson.core.JsonProcessingException;

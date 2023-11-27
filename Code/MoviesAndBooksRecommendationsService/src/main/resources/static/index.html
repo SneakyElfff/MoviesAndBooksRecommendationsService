@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your cup of tea</title>
+  <style>
+    body {
+      background: url("/images/background.jpg") center
+      no-repeat;
+      -webkit-background-size: cover;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      font-family: 'American Typewriter', sans-serif;
+    }
+
+    /* Заголовок */
+    h1 {
+      margin-top: 5vh;
+      font-size: 3em;
+    }
+
+    /* Первая разделительная линия */
+    .line1 {
+      width: 100%;
+      margin-top: 15px;
+      margin-bottom: 0;
+      border: 3px solid #000000;
+    }
+
+    /* Вторая разделительная линия */
+    .line2 {
+      width: 100%;
+      margin-top: 0;
+      margin-bottom: 10px;
+      border: 3px solid #000000;
+    }
+
+    /* Изображение */
+    .image-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .image-container img {
+      width: 100px;
+      height: auto;
+    }
+
+    .button-container {
+      margin-top: 0;
+      display: flex;
+      justify-content: space-between; /* Равномерное распределение пространства между элементами */
+      width: 100%;
+    }
+
+    button {
+      padding: 10px 70px;
+      font-size: 1.4em;
+      color: black;
+      background-color: transparent;
+      border-top-style: none;
+      border-right: 4px solid black;
+      border-bottom-style: none;
+      border-left: 4px solid black;
+      border-radius: 0;
+      cursor: pointer;
+    }
+
+    #booksButton {
+      margin-left: -8px; /* убрать отступ между кнопками */
+    }
+
+    #accountButton {
+      margin-left: auto;
+    }
+
+    .movieContainers {
+      display: flex;
+      flex-wrap: nowrap; /* Запрет переноса на новую строку */
+      justify-content: space-between;
+      margin: 20px; /* Добавлено для отступов между контейнерами фильмов */
+    }
+
+    .bookContainers {
+      display: flex;
+      flex-wrap: nowrap; /* Запрет переноса на новую строку */
+      justify-content: space-between;
+      margin: 20px; /* Добавлено для отступов между контейнерами книг */
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="image-container">
+  <img src="images/LeftImage.png" alt="Film reel" style="position: relative; right: 380px; width:150px;">
+  <h1>Your cup of tea</h1>
+  <img src="images/RightImage.jpg" alt="Open book" style="position: relative; left: 380px; width:150px;">
+</div>
+<hr class="line1">
+<div class="button-container">
+  <button id="moviesButton">Movies</button>
+  <button id="booksButton">Books</button>
+  <button id="accountButton">Account</button>
+</div>
+<hr class="line2">
+
+<div class="movieContainers">
+  <!-- Контейнеры для фильмов будут добавлены сюда динамически -->
+</div>
+
+
+<div class="bookContainers">
+  <!-- Контейнеры для книг будут добавлены сюда динамически -->
+</div>
+
+<script>
+  var movieContainers = [];
+  var alternativeNameElements = [];
+  var posterImageElements = [];
+
+  var bookContainers = [];
+  var titleElements = [];
+  var coverImageElements = [];
+
+  //выполнить после полной загрузки страницы
+  document.addEventListener("DOMContentLoaded", function () {
+
+    //3 раза запросить фильм
+    for (let i = 1; i <= 3; i++) {
+      const movieContainerId = `movieInfo${i}`;
+
+      // Создаем элементы и добавляем в массивы
+      var movieContainer = document.createElement("div");
+      movieContainer.className = "movieContainer";
+
+      var posterElement = document.createElement("div");
+      posterElement.id = `poster${i}`;
+      posterElement.className = "poster";
+      var posterImageElement = document.createElement("img");
+      posterImageElement.id = `posterImage${i}`;
+      posterImageElement.alt = "Movie Poster";
+      posterImageElement.style.width = "150px";
+      posterElement.appendChild(posterImageElement);
+
+      var movieDetailsElement = document.createElement("div");
+      movieDetailsElement.className = "movie-details";
+
+      var alternativeNameElement = document.createElement("div");
+      alternativeNameElement.id = `alternativeName${i}`;
+      movieDetailsElement.appendChild(alternativeNameElement);
+
+      movieContainer.appendChild(posterElement);
+      movieContainer.appendChild(movieDetailsElement);
+
+      // Добавляем созданные элементы в массивы
+      movieContainers.push(movieContainer);
+      posterImageElements.push(posterImageElement);
+      alternativeNameElements.push(alternativeNameElement);
+
+      // Добавляем созданный элемент на страницу
+      document.body.appendChild(movieContainer);
+
+      // Выполняем запрос для каждого фильма
+      fetch(`/recommendMovies`)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+              })
+              .then(data => {
+                // Обновляем соответствующие элементы массива с данными
+                alternativeNameElements[i - 1].textContent = `${data.alternativeName}`;
+                posterImageElements[i - 1].src = data.poster.url;
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+    }
+
+    for (let i=1; i<=3; i++) {
+      const bookInfoId = `bookInfo${i}`;
+
+      var bookContainer = document.createElement("div");
+      bookContainer.className = "bookContainer";
+
+      var coverElement = document.createElement("div");
+      coverElement.id = `imageUrl${i}`;
+      coverElement.className = "cover";
+      var coverImageElement = document.createElement("img");
+      coverImageElement.id = `coverImage${i}`;
+      coverImageElement.alt = "Book Cover";
+      coverImageElement.style.width = "150px";
+      coverElement.appendChild(coverImageElement);
+
+      var bookDetailsElement = document.createElement("div");
+      bookDetailsElement.className = "bool-details";
+
+      var titleElement = document.createElement("div");
+      titleElement.id = `title${i}`;
+      bookDetailsElement.appendChild(titleElement);
+
+      bookContainer.appendChild(coverElement);
+      bookContainer.appendChild(bookDetailsElement);
+
+      // Добавляем созданные элементы в массивы
+      bookContainers.push(bookContainer);
+      coverImageElements.push(coverImageElement);
+      titleElements.push(titleElement);
+
+      // Добавляем созданный элемент на страницу
+      document.body.appendChild(bookContainer);
+
+      fetch(`/recommendBooks`)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+              })
+              .then(data => {
+                // Обновляем соответствующие элементы массива с данными
+                titleElements[i - 1].textContent = `${data.title}`;
+                coverImageElements[i - 1].src = data.imageLinks.thumbnail;
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+    }
+  });
+
+  document.getElementById("moviesButton").addEventListener("click", function() {
+    window.location.href = "/movies";
+  });
+
+  document.getElementById("booksButton").addEventListener("click", function() {
+    window.location.href = "/books";
+  });
+
+  document.getElementById("accountButton").addEventListener("click", function() {
+    window.location.href = "/signIn";
+  });
+</script>
+</body>
+</html>

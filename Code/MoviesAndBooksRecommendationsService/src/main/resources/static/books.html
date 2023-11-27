@@ -6,6 +6,10 @@
   <title>Your cup of tea</title>
   <style>
     body {
+      background: url("/images/background.jpg") center
+      no-repeat;
+      -webkit-background-size: cover;
+      background-size: cover;
       margin: 0;
       padding: 0;
       height: 100vh;
@@ -61,8 +65,8 @@
     button {
       padding: 10px 70px;
       font-size: 1.4em;
-      background-color: #ffffff;
       color: black;
+      background-color: transparent;
       border-top-style: none;
       border-right: 4px solid black;
       border-bottom-style: none;
@@ -71,7 +75,7 @@
       cursor: pointer;
     }
 
-    #booksButton {
+    #moviesButton {
       margin-left: -8px; /* убрать отступ между кнопками */
     }
 
@@ -79,11 +83,19 @@
       margin-left: auto;
     }
 
+    #searchButton{
+      background-color: transparent;
+      color: black;
+      border-left: none;
+      border-right: none;
+    }
+
     input {
       padding: 8px;
       font-size: 1em;
+      background: transparent;
       margin-top: 20px;
-      border: 1px solid #ccc; /* Рамка вокруг поля ввода */
+      border: 1px solid black; /* Рамка вокруг поля ввода */
       border-radius: 4px;
     }
   </style>
@@ -91,30 +103,31 @@
 
 <body>
 <div class="image-container">
-  <img src="../images/LeftImage.png" alt="Film reel" style="position: relative; right: 380px; width:150px;">
+  <img src="images/LeftImage.png" alt="Film reel" style="position: relative; right: 380px; width:150px;">
   <h1>Your cup of tea</h1>
-  <img src="../images/RightImage.jpg" alt="Open book" style="position: relative; left: 380px; width:150px;">
+  <img src="images/RightImage.jpg" alt="Open book" style="position: relative; left: 380px; width:150px;">
 </div>
 <hr class="line1">
 <div class="button-container">
   <button id="recommendationsButton">Recommendations</button>
-  <button id="booksButton">Books</button>
+  <button id="moviesButton">Movies</button>
   <button id="accountButton">Account</button>
 </div>
 <hr class="line2">
-<input type="text" id="movieTitle" placeholder="Enter movie title">
+<input type="text" id="bookTitle" placeholder="Enter book title">
+<input type="text" id="authorName" placeholder="Enter author name">
 <button id="searchButton">Search</button>
 
-<!-- Вывода информации о фильме -->
-<div id="movieInfo"></div>
+<!-- Вывода информации о книге -->
+<div id="bookInfo"></div>
 
 <script>    //JavaScript
 document.getElementById("recommendationsButton").addEventListener("click", function() {
   window.location.href = "/main";
 });
 
-document.getElementById("booksButton").addEventListener("click", function() {
-  window.location.href = "/books";
+document.getElementById("moviesButton").addEventListener("click", function() {
+  window.location.href = "/movies";
 });
 
 document.getElementById("accountButton").addEventListener("click", function() {
@@ -122,24 +135,30 @@ document.getElementById("accountButton").addEventListener("click", function() {
 });
 
 document.getElementById("searchButton").addEventListener("click", function() {
-  var movieTitle = document.getElementById("movieTitle").value;
+  var bookTitle = document.getElementById("bookTitle").value;
+  var authorName = document.getElementById("authorName").value;
 
-  if (movieTitle.trim() === "") {
-    console.log("Movie title is empty. Please enter a title.");
+  if (bookTitle.trim() === "") {
+    console.log("Book title is empty. Please enter a title.");
+    return ;
+  }
+
+  if (authorName.trim() === "") {
+    console.log("Author name is empty. Please enter a name.");
     return ;
   }
 
   //выполнение fetch-запроса к эндпоинту на сервере
-  fetch(`/searchMovie?movieTitle=${encodeURIComponent(movieTitle)}`)
+  fetch(`/searchBook?bookTitle=${encodeURIComponent(bookTitle)}&authorName=${encodeURIComponent(authorName)}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
           })
-          .then(movie => {
-            // Redirect to the new page with the movie information as a query parameter
-            window.location.href = `/personalMovie.html?movie=${encodeURIComponent(JSON.stringify(movie))}`;
+          .then(book => {
+            //обработка ответа от сервера
+            window.location.href = `/personalBook.html?book=${encodeURIComponent(JSON.stringify(book))}`;
           })
           .catch(error => {
             console.error('Error:', error);

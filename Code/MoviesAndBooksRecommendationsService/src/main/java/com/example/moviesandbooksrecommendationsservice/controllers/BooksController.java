@@ -1,7 +1,6 @@
-package com.example.moviesandbooksrecommendationsservice.controller;
+package com.example.moviesandbooksrecommendationsservice.controllers;
 
 import com.example.moviesandbooksrecommendationsservice.entities.Book;
-import com.example.moviesandbooksrecommendationsservice.entities.Movie;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -14,9 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 @RestController

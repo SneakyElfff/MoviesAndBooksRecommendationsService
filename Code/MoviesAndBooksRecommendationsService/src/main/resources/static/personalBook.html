@@ -6,6 +6,10 @@
   <title>Movie Details</title>
   <style>
     body {
+      background: url("/images/background.jpg") center
+      no-repeat;
+      -webkit-background-size: cover;
+      background-size: cover;
       margin: 0;
       padding: 0;
       height: 100vh;
@@ -61,8 +65,8 @@
     button {
       padding: 10px 70px;
       font-size: 1.4em;
-      background-color: #ffffff;
       color: black;
+      background-color: transparent;
       border-top-style: none;
       border-right: 4px solid black;
       border-bottom-style: none;
@@ -200,9 +204,9 @@
 
 <body>
 <div class="image-container">
-  <img src="../images/LeftImage.png" alt="Film reel" style="position: relative; right: 380px; width:150px;">
+  <img src="images/LeftImage.png" alt="Film reel" style="position: relative; right: 380px; width:150px;">
   <h1>Your cup of tea</h1>
-  <img src="../images/RightImage.jpg" alt="Open book" style="position: relative; left: 380px; width:150px;">
+  <img src="images/RightImage.jpg" alt="Open book" style="position: relative; left: 380px; width:150px;">
 </div>
 <hr class="line1">
 <div class="button-container">
@@ -224,7 +228,7 @@
 <div id="pageCount"></div>
 <div id="description"></div>
 <div id="maturityRating"></div>
-<button id="likeButton" onclick="toggleLike()">❤ Like</button>
+<button id="likeButton" onclick="toggleLike('${movie.title}')">❤ Like</button>
 
 
 <script>
@@ -266,15 +270,34 @@
   }
 
   var isLiked = false;
+  var isAuthenticated = /*[[${isAuthenticated}]]*/ false;
 
-  function toggleLike() {
+  function toggleLike(movieTitle) {
     isLiked = !isLiked;
-    updateLikeButton();
+    updateLikeButton(movieTitle);
   }
 
-  function updateLikeButton() {
+  function updateLikeButton(movieTitle) {
     var likeButton = document.getElementById("likeButton");
     likeButton.textContent = isLiked ? "❤ Liked" : "❤ Like";
+
+    // // Отправить запрос на сервер для добавления названия фильма в список пользователя
+    // fetch('/addMovie', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/x-www-form-urlencoded',
+    //   },
+    //   body: 'movieTitle=' + encodeURIComponent(movieTitle),
+    // })
+    //         .then(response => {
+    //           if (!response.ok) {
+    //             throw new Error('Error adding movie to the list');
+    //             alert('Please sign in to like movies.');
+    //           }
+    //         })
+    //         .catch(error => {
+    //           console.error('Error:', error);
+    //         });
   }
 
   document.getElementById("moviesButton").addEventListener("click", function() {
