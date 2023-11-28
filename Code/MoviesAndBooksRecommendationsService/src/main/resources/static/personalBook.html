@@ -194,11 +194,6 @@
       background-color: #eee;
     }
 
-    /*#year, #genres, #alternativeName, #director, #movieLength, #description {*/
-    /*  margin: 0;*/
-    /*  padding: 1px 0;*/
-    /*}*/
-
   </style>
 </head>
 
@@ -228,8 +223,7 @@
 <div id="pageCount"></div>
 <div id="description"></div>
 <div id="maturityRating"></div>
-<button id="likeButton" onclick="toggleLike('${movie.title}')">❤ Like</button>
-
+<button id="likeButton" onclick="toggleLike()">❤ Like</button>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -270,34 +264,30 @@
   }
 
   var isLiked = false;
-  var isAuthenticated = /*[[${isAuthenticated}]]*/ false;
 
-  function toggleLike(movieTitle) {
+  function toggleLike() {
     isLiked = !isLiked;
-    updateLikeButton(movieTitle);
+    updateLikeButton();
   }
 
-  function updateLikeButton(movieTitle) {
+  function updateLikeButton() {
     var likeButton = document.getElementById("likeButton");
     likeButton.textContent = isLiked ? "❤ Liked" : "❤ Like";
 
-    // // Отправить запрос на сервер для добавления названия фильма в список пользователя
-    // fetch('/addMovie', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/x-www-form-urlencoded',
-    //   },
-    //   body: 'movieTitle=' + encodeURIComponent(movieTitle),
-    // })
-    //         .then(response => {
-    //           if (!response.ok) {
-    //             throw new Error('Error adding movie to the list');
-    //             alert('Please sign in to like movies.');
-    //           }
-    //         })
-    //         .catch(error => {
-    //           console.error('Error:', error);
-    //         });
+    var titleElement = document.getElementById("title");
+    var bookTitle = titleElement.textContent.replace("Title: ", "");
+
+    //отправить запрос на сервер для добавления названия книги в список пользователя
+    fetch(`/addBook?bookTitle=${encodeURIComponent(bookTitle)}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Error adding book to the list');
+              }
+              return response.text();
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
   }
 
   document.getElementById("moviesButton").addEventListener("click", function() {

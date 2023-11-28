@@ -230,7 +230,7 @@
 <hr class="line2">
 
 <div id="poster">
-    <img id="posterImage" alt="Movie Poster" style="position: relative; right: 380px;">
+    <img id="posterImage" alt="Movie Poster" style="position: relative; right: 480px; width: 250px">
 </div>
 
 <div id="alternativeName"></div>
@@ -242,7 +242,7 @@
 <div id="movieLength"></div>
 <div id="description"></div>
 <div id="ratingMpaa"></div>
-<button id="likeButton" onclick="toggleLike()">❤ Like</button>
+<button id="likeButton" onclick="toggleLike('${movie.title}')">❤ Like</button>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -285,6 +285,7 @@
     }
 
     var isLiked = false;
+    var isAuthenticated = /*[[${isAuthenticated}]]*/ false;
 
     function toggleLike() {
         isLiked = !isLiked;
@@ -294,6 +295,24 @@
     function updateLikeButton() {
         var likeButton = document.getElementById("likeButton");
         likeButton.textContent = isLiked ? "❤ Liked" : "❤ Like";
+
+        var titleElement = document.getElementById("alternativeName");
+        var movieTitle = titleElement.textContent.replace("Name: ", "");
+
+        //отправить запрос на сервер для добавления названия фильма в список пользователя
+        fetch(`/addMovie?movieTitle=${encodeURIComponent(movieTitle)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error adding movie to the list');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("description").innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
 
     document.getElementById("moviesButton").addEventListener("click", function() {
