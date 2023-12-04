@@ -83,103 +83,33 @@
       margin-left: auto;
     }
 
-    #title {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
+    .content-container {
+      display: grid;
+      grid-template-columns: 300px auto;
+      gap: 20px;
+      position: relative;
+      padding: 0 20px 10px;
     }
 
-    #authors {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
+    .thumbnail {
+      width: 300px; /* Adjust the width of the poster container */
+      height: auto; /* Set height to auto for maintaining aspect ratio */
+      margin-right: 20px;
     }
 
-    #publishedDate {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
-    }
-
-    #categories {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
-    }
-
-    #publisher {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
-    }
-
-    #description {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: left;
-      padding: 0;
-      margin: 0;
-    }
-
-    #pageCount {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
-    }
-
-    #maturityRating {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
+    .thumbnailImage {
+      width: 100%; /* Make the image fill the entire width of the #poster container */
+      height: 100%; /* Make the image fill the entire height of the #poster container */
+      object-fit: cover; /* Maintain aspect ratio and cover the entire container */
     }
 
     #likeButton {
+      width: 10%;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center horizontally */
+      justify-content: center; /* Center vertically */
+      text-align: left;
       padding: 10px;
       font-size: 1.4em;
       background-color: #ffffff;
@@ -190,8 +120,23 @@
       margin-top: 10px; /* Добавленный отступ сверху */
     }
 
+    #title, #authors, #publishedDate, #categories, #publisher,  #pageCount, #description,  #maturityRating {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: left;
+      padding: 0;
+      margin: 0;
+    }
+
     #likeButton:hover {
       background-color: #eee;
+    }
+
+    .error-message {
+      color: red;
     }
 
   </style>
@@ -210,20 +155,25 @@
   <button id="accountButton">Account</button>
 </div>
 <hr class="line2">
+<div id="error"></div>
 
-<div id="thumbnail">
-  <img id="thumbnailImage" alt="Book Thumbnail" style="position: relative; right: 380px;">
+<div class="content-container">
+  <div class="thumbnail">
+    <img id="thumbnailImage" class="thumbnailImage" alt="Book Thumbnail">
+  </div>
+
+  <div class="book-details">
+    <div id="title"></div>
+    <div id="authors"></div>
+    <div id="publishedDate"></div>
+    <div id="categories"></div>
+    <div id="publisher"></div>
+    <div id="pageCount"></div>
+    <div id="description"></div>
+    <div id="maturityRating"></div>
+    <button id="likeButton" onclick="toggleLike()" style="margin-top: 10px;">❤ Like</button>
+  </div>
 </div>
-
-<div id="title"></div>
-<div id="authors"></div>
-<div id="publishedDate"></div>
-<div id="categories"></div>
-<div id="publisher"></div>
-<div id="pageCount"></div>
-<div id="description"></div>
-<div id="maturityRating"></div>
-<button id="likeButton" onclick="toggleLike()">❤ Like</button>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -280,10 +230,22 @@
     //отправить запрос на сервер для добавления названия книги в список пользователя
     fetch(`/addBook?bookTitle=${encodeURIComponent(bookTitle)}`)
             .then(response => {
-              if (!response.ok) {
+              if (response.status === 400) {
+                console.log('This book already exists');
+              }
+              else if (response.status === 401) {
+                console.log('The user is unauthorised');
+              }
+              else if (!response.ok) {
                 throw new Error('Error adding book to the list');
               }
               return response.text();
+            })
+            .then(message => {
+              if (message) {
+                document.getElementById("error").textContent = message;
+                document.getElementById("error").classList.add("error-message");
+              }
             })
             .catch(error => {
               console.error('Error:', error);
