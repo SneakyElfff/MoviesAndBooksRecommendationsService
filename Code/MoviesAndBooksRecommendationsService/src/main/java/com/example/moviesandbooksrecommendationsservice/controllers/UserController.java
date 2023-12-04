@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Set;
+
 @Controller
 public class UserController {
 
@@ -42,6 +44,30 @@ public class UserController {
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
+    }
+
+    @GetMapping("/getMoviesList")
+    public ResponseEntity<Set<String>> getUserMovies(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            Set<String> movies = userService.getUserMovies(username);
+
+            return ResponseEntity.ok(movies);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
+    @GetMapping("/getBooksList")
+    public ResponseEntity<Set<String>> getUserBooks(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            Set<String> books = userService.getUserBooks(username);
+
+            return ResponseEntity.ok(books);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 }

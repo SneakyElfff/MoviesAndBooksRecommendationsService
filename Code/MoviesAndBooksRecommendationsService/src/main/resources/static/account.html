@@ -73,6 +73,7 @@
             border-left: 4px solid black;
             border-radius: 0;
             cursor: pointer;
+            font-family: 'American Typewriter', sans-serif;
         }
 
         #moviesButton {
@@ -100,6 +101,53 @@
 </div>
 
 <hr class="line2">
+
+<h1>User Lists</h1>
+
+<div>
+    <h2>Movies</h2>
+    <ul id="moviesList"></ul>
+</div>
+
+<div>
+    <h2>Books</h2>
+    <ul id="booksList"></ul>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadUserMovies();
+        loadUserBooks();
+    });
+
+    function loadUserMovies() {
+        fetch("/getMoviesList")
+            .then(response => response.json())
+            .then(data => {
+                const moviesList = document.getElementById("moviesList");
+                data.forEach(movie => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = movie;
+                    moviesList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function loadUserBooks() {
+        fetch("/getBooksList")
+            .then(response => response.json())
+            .then(data => {
+                const booksList = document.getElementById("booksList");
+                data.forEach(book => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = book;
+                    booksList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 
 <script>
     document.getElementById("recommendationsButton").addEventListener("click", function() {

@@ -73,79 +73,57 @@
       border-left: 4px solid black;
       border-radius: 0;
       cursor: pointer;
+      font-family: 'American Typewriter', sans-serif;
     }
 
     #booksButton {
-      margin-left: -8px; /* убрать отступ между кнопками */
+      margin-left: -4px; /* убрать отступ между кнопками */
     }
 
     #accountButton {
       margin-left: auto;
     }
 
-    #title {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
+    .content-container {
+      display: grid;
+      grid-template-columns: 300px auto;
+      gap: 20px;
+      position: relative;
+      padding: 0 20px 10px;
     }
 
-    #authors {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
+    .thumbnail {
+      width: 300px; /* Adjust the width of the poster container */
+      height: auto; /* Set height to auto for maintaining aspect ratio */
+      margin-right: 20px;
     }
 
-    #publishedDate {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
+    .thumbnailImage {
+      width: 100%; /* Make the image fill the entire width of the #poster container */
+      height: 100%; /* Make the image fill the entire height of the #poster container */
+      object-fit: cover; /* Maintain aspect ratio and cover the entire container */
     }
 
-    #categories {
-      width: 50%;
-      height: 100%;
+    #likeButton {
+      width: 10%;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
+      align-items: center; /* Center horizontally */
+      justify-content: center; /* Center vertically */
+      text-align: left;
+      padding: 10px;
+      font-size: 1.4em;
+      background-color: #ffffff;
+      color: black;
+      border: 2px solid #000000;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px; /* Добавленный отступ сверху */
+      margin-bottom: 10px;
     }
 
-    #publisher {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
-    }
-
-    #description {
-      width: 50%;
-      height: 100%;
+    #title, #authors, #publishedDate, #categories, #publisher,  #pageCount, #description,  #maturityRating, #error {
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -155,41 +133,6 @@
       margin: 0;
     }
 
-    #pageCount {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
-    }
-
-    #maturityRating {
-      width: 50%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      text-align: right;
-      padding: 0;
-      margin: 0;
-    }
-
-    #likeButton {
-      padding: 10px;
-      font-size: 1.4em;
-      background-color: #ffffff;
-      color: black;
-      border: 2px solid #000000;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px; /* Добавленный отступ сверху */
-    }
-
     #likeButton:hover {
       background-color: #eee;
     }
@@ -197,6 +140,7 @@
     .error-message {
       color: red;
     }
+
   </style>
 </head>
 
@@ -213,21 +157,26 @@
   <button id="accountButton">Account</button>
 </div>
 <hr class="line2">
-<div id="error"></div>
 
-<div id="thumbnail">
-  <img id="thumbnailImage" alt="Book Thumbnail" style="position: relative; right: 380px;">
+<div class="content-container">
+  <div class="thumbnail">
+    <img id="thumbnailImage" class="thumbnailImage" alt="Book Thumbnail">
+  </div>
+
+  <div class="book-details">
+    <div id="title"></div>
+    <div id="authors"></div>
+    <div id="publishedDate"></div>
+    <div id="categories"></div>
+    <div id="publisher"></div>
+    <div id="pageCount"></div>
+    <div id="description"></div>
+    <div id="maturityRating"></div>
+    <button id="likeButton" onclick="toggleLike()" style="margin-top: 10px;">❤ Like</button>
+
+    <div id="error"></div>
+  </div>
 </div>
-
-<div id="title"></div>
-<div id="authors"></div>
-<div id="publishedDate"></div>
-<div id="categories"></div>
-<div id="publisher"></div>
-<div id="pageCount"></div>
-<div id="description"></div>
-<div id="maturityRating"></div>
-<button id="likeButton" onclick="toggleLike()">❤ Like</button>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {

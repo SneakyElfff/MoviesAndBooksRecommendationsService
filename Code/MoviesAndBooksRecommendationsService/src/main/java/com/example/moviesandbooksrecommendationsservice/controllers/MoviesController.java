@@ -30,7 +30,8 @@ public class MoviesController {
         String url = KINOPOISK_API_URL + movieTitle;
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-API-KEY", "D54AW5N-TKP4NKF-K1WTGKY-XD5Y3JS");
+//        headers.set("X-API-KEY", "D54AW5N-TKP4NKF-K1WTGKY-XD5Y3JS");
+        headers.set("X-API-KEY", "CMQKPHR-D1N4494-G2J9T67-2TXV7AK");
         headers.set("Accept", "application/json");
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -62,14 +63,16 @@ public class MoviesController {
         ObjectMapper objectMapper = new ObjectMapper();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-API-KEY", "D54AW5N-TKP4NKF-K1WTGKY-XD5Y3JS");
+//        headers.set("X-API-KEY", "D54AW5N-TKP4NKF-K1WTGKY-XD5Y3JS");
+        headers.set("X-API-KEY", "CMQKPHR-D1N4494-G2J9T67-2TXV7AK");
         headers.set("Accept", "application/json");
 
         String id = String.valueOf(movie.getId());
 
         String url_staff = "https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=" + id;
 
-        headers.set("X-API-KEY", "a48fa905-cbc9-4031-ac7d-be116c3a1a53");
+//        headers.set("X-API-KEY", "a48fa905-cbc9-4031-ac7d-be116c3a1a53");
+        headers.set("X-API-KEY", "4433492c-5e67-4886-afdb-52c8d5512456");
         headers.set("Accept", "application/json");
 
         HttpEntity<String> entity_staff = new HttpEntity<>(headers);
@@ -106,7 +109,8 @@ public class MoviesController {
         String url = "https://api.kinopoisk.dev/v1.4/movie/random?notNullFields=alternativeName&type=movie&year=" + LocalDate.now().getYear() + "&rating.kp=6-10";
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-API-KEY", "D54AW5N-TKP4NKF-K1WTGKY-XD5Y3JS");
+//        headers.set("X-API-KEY", "D54AW5N-TKP4NKF-K1WTGKY-XD5Y3JS");
+        headers.set("X-API-KEY", "CMQKPHR-D1N4494-G2J9T67-2TXV7AK");
         headers.set("Accept", "application/json");
 
         HttpEntity<String> entity = new HttpEntity<>(headers);

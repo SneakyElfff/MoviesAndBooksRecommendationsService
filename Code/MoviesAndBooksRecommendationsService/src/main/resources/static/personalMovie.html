@@ -73,115 +73,31 @@
             border-left: 4px solid black;
             border-radius: 0;
             cursor: pointer;
+            font-family: 'American Typewriter', sans-serif;
         }
 
-        #booksButton {
-            margin-left: -8px; /* убрать отступ между кнопками */
+        .content-container {
+            display: grid;
+            grid-template-columns: 300px auto;
+            gap: 20px;
+            position: relative;
+            padding: 0 20px 10px;
         }
 
-        #accountButton {
-            margin-left: auto;
+        .poster {
+            width: 300px; /* Adjust the width of the poster container */
+            height: auto; /* Set height to auto for maintaining aspect ratio */
+            margin-right: 20px;
         }
 
-        #year {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            text-align: right;
-            padding: 0;
-            margin: 0;
+        .posterImage {
+            width: 100%; /* Make the image fill the entire width of the #poster container */
+            height: 100%; /* Make the image fill the entire height of the #poster container */
+            object-fit: cover; /* Maintain aspect ratio and cover the entire container */
         }
 
-        #genres {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            text-align: right;
-            padding: 0;
-            margin: 0;
-        }
-
-        #alternativeName {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            text-align: right;
-            padding: 0;
-            margin: 0;
-        }
-
-        #director {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            text-align: right;
-            padding: 0;
-            margin: 0;
-        }
-
-        #movieLength {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            text-align: right;
-            padding: 0;
-            margin: 0;
-        }
-
-        #countries {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            text-align: right;
-            padding: 0;
-            margin: 0;
-        }
-
-        #ratingMpaa {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            text-align: right;
-            padding: 0;
-            margin: 0;
-        }
-
-        #actors {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            text-align: right;
-            padding: 0;
-            margin: 0;
-        }
-
-        #description {
-            width: 50%;
-            height: 100%;
+        #alternativeName, #genres, #year, #director, #actors, #countries, #movieLength, #description, #ratingMpaa, #error {
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -191,12 +107,13 @@
             margin: 0;
         }
 
-        #year, #genres, #alternativeName, #director, #movieLength, #description, #countries, #ratingMpaa, #actors {
-            margin: 0;
-            padding: 1px 0;
-        }
-
         #likeButton {
+            width: 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center horizontally */
+            justify-content: center; /* Center vertically */
+            text-align: left;
             padding: 10px;
             font-size: 1.4em;
             background-color: #ffffff;
@@ -205,6 +122,20 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px; /* Добавленный отступ сверху */
+            margin-bottom: 10px;
+        }
+
+        #booksButton {
+            margin-left: -4px; /* убрать отступ между кнопками */
+        }
+
+        #accountButton {
+            margin-left: auto;
+        }
+
+        #year, #genres, #alternativeName, #director, #movieLength, #description, #countries, #ratingMpaa, #actors {
+            margin: 0;
+            padding: 0;
         }
 
         #likeButton:hover {
@@ -214,6 +145,7 @@
         .error-message {
             color: red;
         }
+
     </style>
 </head>
 
@@ -231,22 +163,27 @@
 </div>
 
 <hr class="line2">
-<div id="error"></div>
 
-<div id="poster">
-    <img id="posterImage" alt="Movie Poster" style="position: relative; right: 480px; width: 250px">
+<div class="content-container">
+    <div class="poster">
+        <img id="posterImage" class="posterImage" alt="Movie Poster" >
+    </div>
+
+    <div class="movie-details">
+        <div id="alternativeName"></div>
+        <div id="genres"></div>
+        <div id="year"></div>
+        <div id="director"></div>
+        <div id="actors"></div>
+        <div id="countries"></div>
+        <div id="movieLength"></div>
+        <div id="description"></div>
+        <div id="ratingMpaa"></div>
+        <button id="likeButton" onclick="toggleLike()" style="margin-top: 10px;">❤ Like</button>
+
+        <div id="error"></div>
+    </div>
 </div>
-
-<div id="alternativeName"></div>
-<div id="genres"></div>
-<div id="year"></div>
-<div id="director"></div>
-<div id="actors"></div>
-<div id="countries"></div>
-<div id="movieLength"></div>
-<div id="description"></div>
-<div id="ratingMpaa"></div>
-<button id="likeButton" onclick="toggleLike('${movie.title}')">❤ Like</button>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
