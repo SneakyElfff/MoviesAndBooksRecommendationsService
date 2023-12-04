@@ -41,7 +41,7 @@ public class BooksController {
             
             Book book = null;
             if (root.path("totalItems").asInt() == 0)
-                return ResponseEntity.ok(book);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(book);
             JsonNode book_node = root.path("items").get(0).path("volumeInfo");
 
             book = objectMapper.treeToValue(book_node, Book.class);

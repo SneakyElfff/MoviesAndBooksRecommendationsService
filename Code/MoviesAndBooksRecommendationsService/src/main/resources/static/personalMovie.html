@@ -73,6 +73,7 @@
             border-left: 4px solid black;
             border-radius: 0;
             cursor: pointer;
+            font-family: 'American Typewriter', sans-serif;
         }
 
         .content-container {
@@ -95,7 +96,7 @@
             object-fit: cover; /* Maintain aspect ratio and cover the entire container */
         }
 
-        #alternativeName, #genres, #year, #director, #actors, #countries, #movieLength, #description, #ratingMpaa {
+        #alternativeName, #genres, #year, #director, #actors, #countries, #movieLength, #description, #ratingMpaa, #error {
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -121,10 +122,11 @@
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px; /* Добавленный отступ сверху */
+            margin-bottom: 10px;
         }
 
         #booksButton {
-            margin-left: -8px; /* убрать отступ между кнопками */
+            margin-left: -4px; /* убрать отступ между кнопками */
         }
 
         #accountButton {
@@ -161,7 +163,6 @@
 </div>
 
 <hr class="line2">
-<div id="error"></div>
 
 <div class="content-container">
     <div class="poster">
@@ -179,6 +180,8 @@
         <div id="description"></div>
         <div id="ratingMpaa"></div>
         <button id="likeButton" onclick="toggleLike()" style="margin-top: 10px;">❤ Like</button>
+
+        <div id="error"></div>
     </div>
 </div>
 

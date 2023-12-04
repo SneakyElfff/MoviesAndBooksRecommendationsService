@@ -73,10 +73,11 @@
       border-left: 4px solid black;
       border-radius: 0;
       cursor: pointer;
+      font-family: 'American Typewriter', sans-serif;
     }
 
     #moviesButton {
-      margin-left: -8px; /* убрать отступ между кнопками */
+      margin-left: -4px; /* убрать отступ между кнопками */
     }
 
     #accountButton {
@@ -98,6 +99,10 @@
       border: 1px solid black; /* Рамка вокруг поля ввода */
       border-radius: 4px;
     }
+
+    .error-message {
+      color: red;
+    }
   </style>
 </head>
 
@@ -117,6 +122,7 @@
 <input type="text" id="bookTitle" placeholder="Enter book title">
 <input type="text" id="authorName" placeholder="Enter author name">
 <button id="searchButton">Search</button>
+<div id="error"></div>
 
 <!-- Вывода информации о книге -->
 <div id="bookInfo"></div>
@@ -135,30 +141,43 @@ document.getElementById("accountButton").addEventListener("click", function() {
 });
 
 document.getElementById("searchButton").addEventListener("click", function() {
+  document.getElementById("error").textContent = ``;
+
   var bookTitle = document.getElementById("bookTitle").value;
   var authorName = document.getElementById("authorName").value;
 
   if (bookTitle.trim() === "") {
-    console.log("Book title is empty. Please enter a title.");
-    return ;
+    document.getElementById("error").textContent = `Book title is empty. Please enter a title.`;
+    document.getElementById("error").classList.add("error-message");
+    return;
   }
 
   if (authorName.trim() === "") {
-    console.log("Author name is empty. Please enter a name.");
-    return ;
+    document.getElementById("error").textContent = document.getElementById("error").textContent + ` Author name is empty. Please enter a name.`;
+    document.getElementById("error").classList.add("error-message");
+    return;
   }
 
   //выполнение fetch-запроса к эндпоинту на сервере
   fetch(`/searchBook?bookTitle=${encodeURIComponent(bookTitle)}&authorName=${encodeURIComponent(authorName)}`)
           .then(response => {
-            if (!response.ok) {
+            if (response.status === 404) {
+              console.log('No book found');
+            }
+            else if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.json();
+            else
+              return response.json();
           })
           .then(book => {
-            //обработка ответа от сервера
-            window.location.href = `/personalBook.html?book=${encodeURIComponent(JSON.stringify(book))}`;
+            if (book == null) {
+              document.getElementById("error").textContent = `No book found`;
+              document.getElementById("error").classList.add("error-message");
+            }
+            // Redirect to the new page with the movie information as a query parameter
+            else
+              window.location.href = `/personalBook.html?book=${encodeURIComponent(JSON.stringify(book))}`;
           })
           .catch(error => {
             console.error('Error:', error);

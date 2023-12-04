@@ -73,10 +73,11 @@
       border-left: 4px solid black;
       border-radius: 0;
       cursor: pointer;
+      font-family: 'American Typewriter', sans-serif;
     }
 
     #booksButton {
-      margin-left: -8px; /* убрать отступ между кнопками */
+      margin-left: -4px; /* убрать отступ между кнопками */
     }
 
     #accountButton {
@@ -98,6 +99,10 @@
       border: 1px solid black; /* Рамка вокруг поля ввода */
       border-radius: 4px;
     }
+
+    .error-message {
+      color: red;
+    }
   </style>
 </head>
 
@@ -116,6 +121,7 @@
 <hr class="line2">
 <input type="text" id="movieTitle" placeholder="Enter movie title">
 <button id="searchButton">Search</button>
+<div id="error"></div>
 
 <!-- Вывода информации о фильме -->
 <div id="movieInfo"></div>
@@ -137,21 +143,31 @@ document.getElementById("searchButton").addEventListener("click", function() {
   var movieTitle = document.getElementById("movieTitle").value;
 
   if (movieTitle.trim() === "") {
-    console.log("Movie title is empty. Please enter a title.");
+    document.getElementById("error").textContent = `Movie title is empty. Please enter a title`;
+    document.getElementById("error").classList.add("error-message");
     return ;
   }
 
   //выполнение fetch-запроса к эндпоинту на сервере
   fetch(`/searchMovie?movieTitle=${encodeURIComponent(movieTitle)}`)
           .then(response => {
-            if (!response.ok) {
+            if (response.status === 404) {
+              console.log('No movie found');
+            }
+            else if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.json();
+            else
+              return response.json();
           })
           .then(movie => {
+            if (movie == null) {
+              document.getElementById("error").textContent = `No movie found`;
+              document.getElementById("error").classList.add("error-message");
+            }
             // Redirect to the new page with the movie information as a query parameter
-            window.location.href = `/personalMovie.html?movie=${encodeURIComponent(JSON.stringify(movie))}`;
+            else
+              window.location.href = `/personalMovie.html?movie=${encodeURIComponent(JSON.stringify(movie))}`;
           })
           .catch(error => {
             console.error('Error:', error);

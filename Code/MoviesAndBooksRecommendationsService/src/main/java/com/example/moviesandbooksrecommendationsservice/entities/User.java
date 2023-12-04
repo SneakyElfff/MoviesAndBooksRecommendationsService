@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -17,10 +19,14 @@ public class User {
     private String username;
 
     @ElementCollection
-    private List<String> movieList = new ArrayList<>();
+    @CollectionTable(name = "user_movie_list", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "movie_list", unique = true)
+    private Set<String> movieList = new HashSet<>();
 
     @ElementCollection
-    private List<String> bookList = new ArrayList<>();
+    @CollectionTable(name = "user_book_list", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "book_list", unique = true)
+    private Set<String> bookList = new HashSet<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -30,11 +36,11 @@ public class User {
         this.username = username;
     }
 
-    public void setMovieList(List<String> movieList) {
+    public void setMovieList(Set<String> movieList) {
         this.movieList = movieList;
     }
 
-    public void setBookList(List<String> bookList) {
+    public void setBookList(Set<String> bookList) {
         this.bookList = bookList;
     }
 }
