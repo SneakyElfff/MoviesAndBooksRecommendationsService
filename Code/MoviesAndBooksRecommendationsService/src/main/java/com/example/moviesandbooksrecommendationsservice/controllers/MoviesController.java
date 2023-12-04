@@ -45,7 +45,7 @@ public class MoviesController {
 
             Movie movie = objectMapper.treeToValue(movie_node, Movie.class);
             if (movie_node == null)
-                return ResponseEntity.ok(movie);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(movie);
 
             movie = getStaffInfo(movie);
 
