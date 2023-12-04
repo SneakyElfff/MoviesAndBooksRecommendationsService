@@ -211,6 +211,9 @@
             background-color: #eee;
         }
 
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 
@@ -228,6 +231,7 @@
 </div>
 
 <hr class="line2">
+<div id="error"></div>
 
 <div id="poster">
     <img id="posterImage" alt="Movie Poster" style="position: relative; right: 480px; width: 250px">
@@ -302,13 +306,22 @@
         //отправить запрос на сервер для добавления названия фильма в список пользователя
         fetch(`/addMovie?movieTitle=${encodeURIComponent(movieTitle)}`)
             .then(response => {
-                if (!response.ok) {
+                if (response.status === 400) {
+                    console.log('This movie already exists');
+                }
+                else if (response.status === 401) {
+                    console.log('The user is unauthorised');
+                }
+                else if (!response.ok) {
                     throw new Error('Error adding movie to the list');
                 }
-                return response.json();
+                return response.text();
             })
-            .then(data => {
-                document.getElementById("description").innerHTML = data;
+            .then(message => {
+                if (message) {
+                    document.getElementById("error").textContent = message;
+                    document.getElementById("error").classList.add("error-message");
+                }
             })
             .catch(error => {
                 console.error('Error:', error);

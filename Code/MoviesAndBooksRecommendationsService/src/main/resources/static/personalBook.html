@@ -194,6 +194,9 @@
       background-color: #eee;
     }
 
+    .error-message {
+      color: red;
+    }
   </style>
 </head>
 
@@ -210,6 +213,7 @@
   <button id="accountButton">Account</button>
 </div>
 <hr class="line2">
+<div id="error"></div>
 
 <div id="thumbnail">
   <img id="thumbnailImage" alt="Book Thumbnail" style="position: relative; right: 380px;">
@@ -280,10 +284,22 @@
     //отправить запрос на сервер для добавления названия книги в список пользователя
     fetch(`/addBook?bookTitle=${encodeURIComponent(bookTitle)}`)
             .then(response => {
-              if (!response.ok) {
+              if (response.status === 400) {
+                console.log('This book already exists');
+              }
+              else if (response.status === 401) {
+                console.log('The user is unauthorised');
+              }
+              else if (!response.ok) {
                 throw new Error('Error adding book to the list');
               }
               return response.text();
+            })
+            .then(message => {
+              if (message) {
+                document.getElementById("error").textContent = message;
+                document.getElementById("error").classList.add("error-message");
+              }
             })
             .catch(error => {
               console.error('Error:', error);
