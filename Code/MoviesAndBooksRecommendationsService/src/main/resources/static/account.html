@@ -76,6 +76,21 @@
             font-family: 'American Typewriter', sans-serif;
         }
 
+        .likedMovies, .likedBooks {
+            width: 100%;
+            margin: 0 auto;
+            font-family: 'American Typewriter', sans-serif;
+        }
+
+        .likedMovies ul, .likedBooks ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+            font-family: 'American Typewriter', sans-serif;
+            font-size: 1.2em;
+        }
+
+
         #moviesButton {
             margin-left: -8px; /* убрать отступ между кнопками */
         }
@@ -102,17 +117,22 @@
 
 <hr class="line2">
 
-<h1>User Lists</h1>
-
-<div>
-    <h2>Movies</h2>
-    <ul id="moviesList"></ul>
-</div>
-
-<div>
-    <h2>Books</h2>
-    <ul id="booksList"></ul>
-</div>
+<table style="width: 100%;">
+    <tr>
+        <td style="width: 50%;">
+            <div class="likedMovies">
+                <h2>Your Movies</h2>
+                <div id="moviesList"></div>
+            </div>
+        </td>
+        <td style="width: 50%;">
+            <div class="likedBooks">
+                <h2>Your Books</h2>
+                <div id="booksList"></div>
+            </div>
+        </td>
+    </tr>
+</table>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -126,9 +146,36 @@
             .then(data => {
                 const moviesList = document.getElementById("moviesList");
                 data.forEach(movie => {
-                    const listItem = document.createElement("li");
-                    listItem.textContent = movie;
-                    moviesList.appendChild(listItem);
+                    const buttonItem = document.createElement("button");
+                    buttonItem.style.border = "none";
+                    buttonItem.style.fontSize="1em";
+                    buttonItem.style.width="100%";
+                    buttonItem.textContent = movie;
+                    buttonItem.addEventListener("click", function() {
+                        fetch(`/searchMovie?movieTitle=${encodeURIComponent(movie)}`)
+                            .then(response => {
+                                if (response.status === 404) {
+                                    console.log('No movie found');
+                                }
+                                else if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                else
+                                    return response.json();
+                            })
+                            .then(movie => {
+                                if (movie == null) {
+                                    document.getElementById("error").textContent = `No movie found`;
+                                    document.getElementById("error").classList.add("error-message");
+                                }
+                                else
+                                    window.location.href = `/personalMovie.html?movie=${encodeURIComponent(JSON.stringify(movie))}`;
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    });
+                    moviesList.appendChild(buttonItem);
                 });
             })
             .catch(error => console.error('Error:', error));
@@ -140,9 +187,36 @@
             .then(data => {
                 const booksList = document.getElementById("booksList");
                 data.forEach(book => {
-                    const listItem = document.createElement("li");
-                    listItem.textContent = book;
-                    booksList.appendChild(listItem);
+                    const buttonItem = document.createElement("button");
+                    buttonItem.style.border = "none";
+                    buttonItem.style.fontSize="1em";
+                    buttonItem.style.width="100%";
+                    buttonItem.textContent = book;
+                    buttonItem.addEventListener("click", function() {
+                        fetch(`/searchBook?bookTitle=${encodeURIComponent(book)}`)
+                            .then(response => {
+                                if (response.status === 404) {
+                                    console.log('No book found');
+                                }
+                                else if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                else
+                                    return response.json();
+                            })
+                            .then(book => {
+                                if (book == null) {
+                                    document.getElementById("error").textContent = `No book found`;
+                                    document.getElementById("error").classList.add("error-message");
+                                }
+                                else
+                                    window.location.href = `/personalBook.html?book=${encodeURIComponent(JSON.stringify(book))}`;
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    });
+                    booksList.appendChild(buttonItem);
                 });
             })
             .catch(error => console.error('Error:', error));
