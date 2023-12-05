@@ -193,7 +193,7 @@
                     buttonItem.style.width="100%";
                     buttonItem.textContent = book;
                     buttonItem.addEventListener("click", function() {
-                        fetch(`/searchBook?bookTitle=${encodeURIComponent(book)}`)
+                        fetch(`/searchBookByTitle?bookTitle=${encodeURIComponent(book)}`)
                             .then(response => {
                                 if (response.status === 404) {
                                     console.log('No book found');
