@@ -28,6 +28,12 @@ public class User {
     @Column(name = "book_list", unique = true)
     private Set<String> bookList = new HashSet<>();
 
+    @Getter
+    @ElementCollection
+    @CollectionTable(name = "user_authors_list", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "authors_list")
+    private Set<String> bookAuthors = new HashSet<>();
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -42,5 +48,9 @@ public class User {
 
     public void setBookList(Set<String> bookList) {
         this.bookList = bookList;
+    }
+
+    public void setBookAuthors(Set<String> bookAuthors) {
+        this.bookAuthors = bookAuthors;
     }
 }

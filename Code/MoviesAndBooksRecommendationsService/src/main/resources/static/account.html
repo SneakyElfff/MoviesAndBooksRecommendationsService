@@ -131,6 +131,12 @@
                 <div id="booksList"></div>
             </div>
         </td>
+        <td style="width: 50%;">
+            <div class="likedBooks">
+                <h2>Your Authors</h2>
+                <div id="authorsList"></div>
+            </div>
+        </td>
     </tr>
 </table>
 
@@ -182,18 +188,35 @@
     }
 
     function loadUserBooks() {
+        fetch("/getAuthorsList")
+            .then(response => response.json())
+            .then(data => {
+                const authorsList = document.getElementById("authorsList");
+                data.forEach(author => {
+                    const textItem = document.createElement("plaintext");
+                    textItem.textContent = author;
+                    textItem.style.fontSize="1em";
+                    textItem.style.fontFamily="American Typewriter, sans-serif";
+                    authorsList.appendChild(textItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+
         fetch("/getBooksList")
             .then(response => response.json())
             .then(data => {
                 const booksList = document.getElementById("booksList");
-                data.forEach(book => {
+                data.forEach((book, index) => {
                     const buttonItem = document.createElement("button");
                     buttonItem.style.border = "none";
                     buttonItem.style.fontSize="1em";
                     buttonItem.style.width="100%";
                     buttonItem.textContent = book;
                     buttonItem.addEventListener("click", function() {
-                        fetch(`/searchBookByTitle?bookTitle=${encodeURIComponent(book)}`)
+
+                        const author = document.getElementById("authorsList").children[index].textContent;
+
+                        fetch(`/searchBook?bookTitle=${encodeURIComponent(book)}&authorName=${encodeURIComponent(author)}`)
                             .then(response => {
                                 if (response.status === 404) {
                                     console.log('No book found');

@@ -208,10 +208,10 @@
     titleElement.textContent = `Title: ${book.title}`;
     authorsElement.textContent = `Authors: ${book.authors.join(", ")}`;
     publisherElement.textContent = `Publisher: ${book.publisher}`;
-    publishedDateElement.textContent = `PublishedDate: ${book.publishedDate}`;
+    publishedDateElement.textContent = `Published: ${book.publishedDate}`;
     categoriesElement.textContent = `Categories:  ${book.categories.join(", ")}`;
     maturityRatingElement.textContent = `Maturity rating: ${book.maturityRating}`;
-    pageCountElement.textContent = `Page count: ${book.pageCount}`;
+    pageCountElement.textContent = `Pages: ${book.pageCount}`;
     descriptionElement.textContent = `Description: ${book.description}`;
     urlElement.src = book.imageLinks.thumbnail;
   }
@@ -230,8 +230,11 @@
     var titleElement = document.getElementById("title");
     var bookTitle = titleElement.textContent.replace("Title: ", "");
 
+    var authorsElement = document.getElementById("authors");
+    var bookAuthor = authorsElement.textContent.replace("Authors: ", "");
+
     //отправить запрос на сервер для добавления названия книги в список пользователя
-    fetch(`/addBook?bookTitle=${encodeURIComponent(bookTitle)}`)
+    fetch(`/addBook?bookTitle=${encodeURIComponent(bookTitle)}&bookAuthor=${encodeURIComponent(bookAuthor)}`)
             .then(response => {
               if (response.status === 400) {
                 console.log('This book already exists');

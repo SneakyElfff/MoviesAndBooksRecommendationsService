@@ -34,9 +34,9 @@ public class UserController {
     }
 
     @GetMapping("/addBook")
-    public ResponseEntity<String> addBook(@RequestParam String bookTitle, Authentication authentication) {
+    public ResponseEntity<String> addBook(@RequestParam String bookTitle, @RequestParam String bookAuthor, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            boolean added = userService.addBookToUserList(bookTitle, authentication.getName());
+            boolean added = userService.addBookToUserList(bookTitle, bookAuthor, authentication.getName());
             if (added) {
                 return ResponseEntity.ok("Book added successfully");
             } else {
@@ -66,6 +66,18 @@ public class UserController {
             Set<String> books = userService.getUserBooks(username);
 
             return ResponseEntity.ok(books);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
+    @GetMapping("/getAuthorsList")
+    public ResponseEntity<Set<String>> getUserAuthors(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            Set<String> authors = userService.getUserBooksAuthors(username);
+
+            return ResponseEntity.ok(authors);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }

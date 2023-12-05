@@ -36,7 +36,7 @@ public class UserService {
     }
 
     @Transactional
-    public boolean addBookToUserList(String bookTitle, String username) {
+    public boolean addBookToUserList(String bookTitle, String bookAuthor, String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             user = new User();
@@ -44,8 +44,11 @@ public class UserService {
         }
 
         Set<String> bookList = user.getBookList();
+        Set<String> bookAuthors = user.getBookAuthors();
+
         if (!bookList.contains(bookTitle)) {
             bookList.add(bookTitle);
+            bookAuthors.add(bookAuthor);
             userRepository.save(user);
 
             return true;
@@ -67,4 +70,10 @@ public class UserService {
 
         return user != null ? new HashSet<>(user.getBookList()) : Collections.emptySet();
     }
+
+    @Transactional
+    public Set<String> getUserBooksAuthors(String username) {
+        User user = userRepository.findByUsername(username);
+
+        return user != null ? new HashSet<>(user.getBookAuthors()) : Collections.emptySet();    }
 }
