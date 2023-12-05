@@ -9,5 +9,9 @@ This app is intended for helping in search of movies to watch or books to read.
 - [app (code);](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/tree/d2c1dfd8128b3b84f541fd378e7b6b8706777c7f/Code/src/main)
 
 ## App characteristics:
-- type: web;
-- language: java;
+- type: web
+- languages: 
+  - java
+  - HTML
+  - JavaScript
+  - CSS
