@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
-
 import java.io.IOException;
 import java.util.Random;
 
@@ -39,39 +38,6 @@ public class BooksController {
         try {
             JsonNode root = objectMapper.readTree(response.getBody());
             
-            Book book = null;
-            if (root.path("totalItems").asInt() == 0)
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(book);
-            JsonNode book_node = root.path("items").get(0).path("volumeInfo");
-
-            book = objectMapper.treeToValue(book_node, Book.class);
-
-            logger.info("Deserialized book: {}", book);
-            return ResponseEntity.ok(book);
-        } catch (IOException e) {
-            logger.error("Error deserializing book", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GetMapping("/searchBookByTitle")
-    public ResponseEntity<Book> getBookInfo(@RequestParam String bookTitle) {
-        RestTemplate template = new RestTemplate();
-
-        String url = GOOGLE_BOOKS_API_URL + bookTitle + "+intitle:" + bookTitle;
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-API-KEY", "AIzaSyCKmxvPEfqkhJObL5Byce24XmKvmTuo2lY");
-        headers.set("Accept", "application/json");
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, entity, String.class);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            JsonNode root = objectMapper.readTree(response.getBody());
-
             Book book = null;
             if (root.path("totalItems").asInt() == 0)
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(book);
@@ -124,4 +90,3 @@ public class BooksController {
         }
     }
 }
-

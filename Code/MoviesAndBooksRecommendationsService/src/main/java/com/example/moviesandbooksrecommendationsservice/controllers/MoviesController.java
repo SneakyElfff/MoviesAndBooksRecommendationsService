@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -121,11 +120,8 @@ public class MoviesController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode root = objectMapper.readTree(response.getBody());
-//            JsonNode movie_node = root.path("docs").get(0);     //получить первый объект фильма из массива "docs"
 
             Movie movie = objectMapper.treeToValue(root, Movie.class);
-//            if (movie_node == null)
-//                return ResponseEntity.ok(movie);
 
             movie = getStaffInfo(movie);
 

@@ -5,7 +5,6 @@ import com.example.moviesandbooksrecommendationsservice.repositories.UserReposit
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
