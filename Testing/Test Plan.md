@@ -120,7 +120,7 @@
 
 ## 6 Представление результатов
 
-Результаты тестирования представлены в документе ["Представление результатов"]().
+Результаты тестирования представлены в документе ["Представление результатов"](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/blob/main/Testing/Test%20Results.md).
 
 <a name="conclusion"></a>
 
