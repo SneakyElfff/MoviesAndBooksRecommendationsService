@@ -98,6 +98,7 @@
       margin-top: 20px;
       border: 1px solid black; /* Рамка вокруг поля ввода */
       border-radius: 4px;
+      display: inline;
     }
 
     .error-message {
@@ -119,8 +120,12 @@
   <button id="accountButton">Account</button>
 </div>
 <hr class="line2">
-<input type="text" id="bookTitle" placeholder="Enter book title">
-<input type="text" id="authorName" placeholder="Enter author name">
+<div class="searchFields">
+  <input type="text" id="bookTitle" placeholder="Enter book title">
+  <input type="text" id="authorName" placeholder="Enter author name">
+  <input type="text" id="bookYear" placeholder="Enter book year">
+</div>
+
 <button id="searchButton">Search</button>
 <div id="error"></div>
 
