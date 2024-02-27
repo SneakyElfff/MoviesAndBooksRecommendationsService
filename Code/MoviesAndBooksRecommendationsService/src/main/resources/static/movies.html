@@ -128,6 +128,7 @@
 
 <!-- Вывода информации о фильме -->
 <div id="movieInfo"></div>
+<div id="movieList"></div>
 
 <script>    //JavaScript
 document.getElementById("recommendationsButton").addEventListener("click", function() {
@@ -155,22 +156,26 @@ document.getElementById("searchButton").addEventListener("click", function() {
   fetch(`/searchMovie?movieTitle=${encodeURIComponent(movieTitle)}`)
           .then(response => {
             if (response.status === 404) {
-              console.log('No movie found');
-            }
-            else if (!response.ok) {
+              console.log('No movies found');
+              return Promise.resolve([]);    //возвращается пустой массив в случае отсутствия фильмов
+            } else if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            else
+            } else {
               return response.json();
-          })
-          .then(movie => {
-            if (movie == null) {
-              document.getElementById("error").textContent = `No movie found`;
-              document.getElementById("error").classList.add("error-message");
             }
-            // Redirect to the new page with the movie information as a query parameter
-            else
-              window.location.href = `/personalMovie.html?movie=${encodeURIComponent(JSON.stringify(movie))}`;
+          })
+          .then(movies => {
+            if (movies.length === 0) {
+              document.getElementById("error").textContent = `No movies found`;
+              document.getElementById("error").classList.add("error-message");
+            } else {
+              //открывается отдельная персональная страница для каждого фильма
+              movies.forEach(movie => {
+                const movieJson = JSON.stringify(movie);
+                const url = `/personalMovie.html?movie=${encodeURIComponent(movieJson)}`;
+                window.open(url, '_blank');    //в новой вкладке
+              });
+            }
           })
           .catch(error => {
             console.error('Error:', error);

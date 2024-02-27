@@ -165,22 +165,25 @@ document.getElementById("searchButton").addEventListener("click", function() {
   fetch(`/searchBook?bookTitle=${encodeURIComponent(bookTitle)}&authorName=${encodeURIComponent(authorName)}`)
           .then(response => {
             if (response.status === 404) {
-              console.log('No book found');
-            }
-            else if (!response.ok) {
+              console.log('No books found');
+              return Promise.resolve([]); // Возвращаем пустой массив в случае отсутствия книг
+            } else if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            else
+            } else {
               return response.json();
-          })
-          .then(book => {
-            if (book == null) {
-              document.getElementById("error").textContent = `No book found`;
-              document.getElementById("error").classList.add("error-message");
             }
-            // Redirect to the new page with the movie information as a query parameter
-            else
-              window.location.href = `/personalBook.html?book=${encodeURIComponent(JSON.stringify(book))}`;
+          })
+          .then(books => {
+            if (books.length === 0) {
+              document.getElementById("error").textContent = `No books found`;
+              document.getElementById("error").classList.add("error-message");
+            } else {
+              books.forEach(book => {
+                const bookJson = JSON.stringify(book);
+                const url = `/personalBook.html?book=${encodeURIComponent(bookJson)}`;
+                window.open(url, '_blank');
+              });
+            }
           })
           .catch(error => {
             console.error('Error:', error);

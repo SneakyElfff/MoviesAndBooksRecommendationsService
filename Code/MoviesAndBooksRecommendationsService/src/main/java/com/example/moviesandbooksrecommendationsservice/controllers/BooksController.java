@@ -12,16 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @RestController
 public class BooksController {
     private static final Logger logger = LoggerFactory.getLogger(BooksController.class);
 
-    private static final String GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+    //!!! сделать maxResults переменным
+    private static final String GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes?maxResults=3&q=";
 
     @GetMapping("/searchBook")
-    public ResponseEntity<Book> getBookInfo(@RequestParam String bookTitle, @RequestParam(required = false) String authorName) {
+    public ResponseEntity<List<Book>> getBookInfo(@RequestParam String bookTitle, @RequestParam(required = false) String authorName) {
         RestTemplate template = new RestTemplate();
 
         String url = GOOGLE_BOOKS_API_URL + bookTitle + "+intitle:" + bookTitle + "+inauthor:" + authorName;
@@ -37,18 +40,22 @@ public class BooksController {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode root = objectMapper.readTree(response.getBody());
-            
-            Book book = null;
+
+            List<Book> books = new ArrayList<>();
             if (root.path("totalItems").asInt() == 0)
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(book);
-            JsonNode book_node = root.path("items").get(0).path("volumeInfo");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(books);
 
-            book = objectMapper.treeToValue(book_node, Book.class);
+            JsonNode itemsNode = root.path("items");
+            for (JsonNode itemNode : itemsNode) {
+                JsonNode volumeInfoNode = itemNode.path("volumeInfo");
+                Book book = objectMapper.treeToValue(volumeInfoNode, Book.class);
+                books.add(book);
+            }
 
-            logger.info("Deserialized book: {}", book);
-            return ResponseEntity.ok(book);
+            logger.info("Deserialized books: {}", books);
+            return ResponseEntity.ok(books);
         } catch (IOException e) {
-            logger.error("Error deserializing book", e);
+            logger.error("Error deserializing books", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

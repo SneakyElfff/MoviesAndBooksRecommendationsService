@@ -20,10 +20,11 @@ import java.util.List;
 public class MoviesController {
     private static final Logger logger = LoggerFactory.getLogger(MoviesController.class);
 
-    private static final String KINOPOISK_API_URL = "https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=1&query=";
+    //!!! сделать limit переменным
+    private static final String KINOPOISK_API_URL = "https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=3&query=";
 
     @GetMapping("/searchMovie")
-    public ResponseEntity<Movie> getMovieInfo(@RequestParam String movieTitle) {
+    public ResponseEntity<List<Movie>> getMovieInfo(@RequestParam String movieTitle) {
         RestTemplate template = new RestTemplate();
 
         String url = KINOPOISK_API_URL + movieTitle;
@@ -37,22 +38,26 @@ public class MoviesController {
 
         ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, entity, String.class);
 
-        //преобразование JSON в объект Movie
+        //преобразование JSON в список объектов Movie
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode root = objectMapper.readTree(response.getBody());
-            JsonNode movie_node = root.path("docs").get(0);     //получить первый объект фильма из массива "docs"
+            JsonNode moviesNode = root.path("docs");    //получить массив фильмов
+            List<Movie> movies = new ArrayList<>();
 
-            Movie movie = objectMapper.treeToValue(movie_node, Movie.class);
-            if (movie_node == null)
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(movie);
+            for (JsonNode movieNode : moviesNode) {
+                Movie movie = objectMapper.treeToValue(movieNode, Movie.class);
+                movie = getStaffInfo(movie);
+                movies.add(movie);
+            }
 
-            movie = getStaffInfo(movie);
+            if (movies.isEmpty())
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(movies);
 
-            logger.info("Deserialized movie: {}", movie);
-            return ResponseEntity.ok(movie);
+            logger.info("Deserialized movies: {}", movies);
+            return ResponseEntity.ok(movies);
         } catch (IOException e) {
-            logger.error("Error deserializing movie", e);
+            logger.error("Error deserializing movies", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
