@@ -122,7 +122,7 @@
 <hr class="line2">
 <input type="text" id="bookTitle" placeholder="Enter book title">
 <input type="text" id="authorName" placeholder="Enter author name">
-<input type="text" id="bookYear" placeholder="Enter book year">
+<input type="text" id="bookGenre" placeholder="Enter book genre">
 
 <button id="searchButton">Search</button>
 <div id="error"></div>
@@ -148,6 +148,7 @@ document.getElementById("searchButton").addEventListener("click", function() {
 
   var bookTitle = document.getElementById("bookTitle").value;
   var authorName = document.getElementById("authorName").value;
+  var bookGenre = document.getElementById("bookGenre").value;
 
   if (bookTitle.trim() === "") {
     document.getElementById("error").textContent = `Book title is empty. Please enter a title.`;
@@ -162,7 +163,7 @@ document.getElementById("searchButton").addEventListener("click", function() {
   }
 
   //выполнение fetch-запроса к эндпоинту на сервере
-  fetch(`/searchBook?bookTitle=${encodeURIComponent(bookTitle)}&authorName=${encodeURIComponent(authorName)}`)
+  fetch(`/searchBooks?bookTitle=${encodeURIComponent(bookTitle)}&authorName=${encodeURIComponent(authorName)}&bookGenre=${encodeURIComponent(bookGenre)}`)
           .then(response => {
             if (response.status === 404) {
               console.log('No books found');

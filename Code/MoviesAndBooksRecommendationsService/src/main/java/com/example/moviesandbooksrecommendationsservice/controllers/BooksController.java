@@ -20,14 +20,54 @@ import java.util.Random;
 public class BooksController {
     private static final Logger logger = LoggerFactory.getLogger(BooksController.class);
 
-    //!!! сделать maxResults переменным
-    private static final String GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes?maxResults=3&q=";
+    private static final String GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+
+    private static final String GOOGLE_BOOKS_API_URL_MULTIPLE = "https://www.googleapis.com/books/v1/volumes?maxResults=3&q=";
 
     @GetMapping("/searchBook")
-    public ResponseEntity<List<Book>> getBookInfo(@RequestParam String bookTitle, @RequestParam(required = false) String authorName) {
+    public ResponseEntity<Book> getBookInfo(@RequestParam String bookTitle, @RequestParam(required = false) String authorName) {
         RestTemplate template = new RestTemplate();
 
         String url = GOOGLE_BOOKS_API_URL + bookTitle + "+intitle:" + bookTitle + "+inauthor:" + authorName;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-API-KEY", "AIzaSyCKmxvPEfqkhJObL5Byce24XmKvmTuo2lY");
+        headers.set("Accept", "application/json");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, entity, String.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode root = objectMapper.readTree(response.getBody());
+
+            Book book = null;
+            if (root.path("totalItems").asInt() == 0)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(book);
+            JsonNode book_node = root.path("items").get(0).path("volumeInfo");
+
+            book = objectMapper.treeToValue(book_node, Book.class);
+
+            logger.info("Deserialized book: {}", book);
+            return ResponseEntity.ok(book);
+        } catch (IOException e) {
+            logger.error("Error deserializing book", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/searchBooks")
+    public ResponseEntity<List<Book>> getBooksInfo(@RequestParam String bookTitle,
+                                                   @RequestParam(required = false) String authorName,
+                                                   @RequestParam(required = false) String bookGenre) {
+        RestTemplate template = new RestTemplate();
+
+        String url = GOOGLE_BOOKS_API_URL_MULTIPLE + bookTitle + "+intitle:" + bookTitle + "+inauthor:" + authorName;
+
+        if (bookGenre != "") {
+            url += "+subject:" + bookGenre;
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-API-KEY", "AIzaSyCKmxvPEfqkhJObL5Byce24XmKvmTuo2lY");

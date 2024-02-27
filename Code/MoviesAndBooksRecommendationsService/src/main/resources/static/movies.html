@@ -145,6 +145,8 @@ document.getElementById("accountButton").addEventListener("click", function() {
 
 document.getElementById("searchButton").addEventListener("click", function() {
   var movieTitle = document.getElementById("movieTitle").value;
+  var movieGenre = document.getElementById("movieGenre").value;
+  var movieYear = document.getElementById("movieYear").value;
 
   if (movieTitle.trim() === "") {
     document.getElementById("error").textContent = `Movie title is empty. Please enter a title`;
@@ -153,7 +155,7 @@ document.getElementById("searchButton").addEventListener("click", function() {
   }
 
   //выполнение fetch-запроса к эндпоинту на сервере
-  fetch(`/searchMovie?movieTitle=${encodeURIComponent(movieTitle)}`)
+  fetch(`/searchMovies?movieTitle=${encodeURIComponent(movieTitle)}&movieGenre=${encodeURIComponent(movieGenre)}&movieYear=${encodeURIComponent(movieYear)}`)
           .then(response => {
             if (response.status === 404) {
               console.log('No movies found');

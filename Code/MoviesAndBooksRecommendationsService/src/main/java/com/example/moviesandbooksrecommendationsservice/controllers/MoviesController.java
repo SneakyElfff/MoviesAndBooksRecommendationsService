@@ -20,17 +20,65 @@ import java.util.List;
 public class MoviesController {
     private static final Logger logger = LoggerFactory.getLogger(MoviesController.class);
 
-    //!!! сделать limit переменным
-    private static final String KINOPOISK_API_URL = "https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=3&query=";
+    private static final String KINOPOISK_API_URL = "https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=1&query=";
+
+    private static final String KINOPOISK_API_URL_MULTIPLE = "https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=3&query=";
+
+    private static final String KINOPOISK_API_URL_FILTER = "https://api.kinopoisk.dev/v1.4/movie?page=1&limit=3";
 
     @GetMapping("/searchMovie")
-    public ResponseEntity<List<Movie>> getMovieInfo(@RequestParam String movieTitle) {
+    public ResponseEntity<Movie> getMovieInfo(@RequestParam String movieTitle) {
         RestTemplate template = new RestTemplate();
 
         String url = KINOPOISK_API_URL + movieTitle;
 
         HttpHeaders headers = new HttpHeaders();
 //        headers.set("X-API-KEY", "D54AW5N-TKP4NKF-K1WTGKY-XD5Y3JS");
+        headers.set("X-API-KEY", "CMQKPHR-D1N4494-G2J9T67-2TXV7AK");
+        headers.set("Accept", "application/json");
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, entity, String.class);
+
+        //преобразование JSON в объект Movie
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode root = objectMapper.readTree(response.getBody());
+            JsonNode movie_node = root.path("docs").get(0);     //получить первый объект фильма из массива "docs"
+
+            Movie movie = objectMapper.treeToValue(movie_node, Movie.class);
+            if (movie_node == null)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(movie);
+
+            movie = getStaffInfo(movie);
+
+            logger.info("Deserialized movie: {}", movie);
+            return ResponseEntity.ok(movie);
+        } catch (IOException e) {
+            logger.error("Error deserializing movie", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/searchMovies")
+    public ResponseEntity<List<Movie>> getMoviesInfo(@RequestParam String movieTitle,
+                                                     @RequestParam(required = false) String movieYear,
+                                                     @RequestParam(required = false) String movieGenre) {
+        RestTemplate template = new RestTemplate();
+
+        String url;
+        if (movieYear != "" && movieGenre != "") {
+            url = KINOPOISK_API_URL_FILTER + "&year=" + movieYear + "&genres.name=" + movieGenre;
+        } else if (movieYear != "") {
+            url = KINOPOISK_API_URL_FILTER + "&year=" + movieYear;
+        } else if (movieGenre != "") {
+            url = KINOPOISK_API_URL_FILTER + "&genres.name=" + movieGenre;
+        } else {
+            url = KINOPOISK_API_URL_MULTIPLE + movieTitle;
+        }
+
+        HttpHeaders headers = new HttpHeaders();
         headers.set("X-API-KEY", "CMQKPHR-D1N4494-G2J9T67-2TXV7AK");
         headers.set("Accept", "application/json");
 
