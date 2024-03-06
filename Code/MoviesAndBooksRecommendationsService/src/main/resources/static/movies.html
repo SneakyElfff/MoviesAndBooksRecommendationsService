@@ -121,14 +121,18 @@
 </div>
 <hr class="line2">
 <input type="text" id="movieTitle" placeholder="Enter movie title">
-<input type="text" id="movieGenre" placeholder="Enter movie genre">
 <input type="text" id="movieYear" placeholder="Enter movie year">
+<input type="text" id="movieRating" placeholder="Enter movie rating">
+<input type="text" id="movieLength" placeholder="Enter movie length">
+<input type="text" id="movieGenre" placeholder="Enter movie genre">
+<input type="text" id="movieCountries" placeholder="Enter countries of origin">
+
 <button id="searchButton">Search</button>
 <div id="error"></div>
 
-<!-- Вывода информации о фильме -->
-<div id="movieInfo"></div>
-<div id="movieList"></div>
+<div id="linksContainer">
+  <!-- Здесь будут отображаться ссылки -->
+</div>
 
 <script>    //JavaScript
 document.getElementById("recommendationsButton").addEventListener("click", function() {
@@ -144,18 +148,39 @@ document.getElementById("accountButton").addEventListener("click", function() {
 });
 
 document.getElementById("searchButton").addEventListener("click", function() {
-  var movieTitle = document.getElementById("movieTitle").value;
-  var movieGenre = document.getElementById("movieGenre").value;
-  var movieYear = document.getElementById("movieYear").value;
+  document.getElementById("error").textContent = ``;
 
-  if (movieTitle.trim() === "") {
-    document.getElementById("error").textContent = `Movie title is empty. Please enter a title`;
+  var linksContainer = document.getElementById("linksContainer");
+  linksContainer.innerHTML = '';
+
+  var movieTitle = document.getElementById("movieTitle").value;
+  var movieYear = document.getElementById("movieYear").value;
+  var movieRating = document.getElementById("movieRating").value;
+  var movieLength = document.getElementById("movieLength").value;
+  var movieGenre = document.getElementById("movieGenre").value;
+  var movieCountries = document.getElementById("movieCountries").value;
+
+  var fields = {
+    "movieTitle": movieTitle.trim(),
+    "year": movieYear.trim(),
+    "rating.kp": movieRating.trim(),
+    "movieLength": movieLength.trim(),
+    "genres.name": movieGenre.trim(),
+    "countries.name": movieCountries.trim()
+  };
+
+  if (!Object.values(fields).some(field => field !== "")) {
+    document.getElementById("error").textContent = `All the fields are empty. Please fill in at least one.`;
     document.getElementById("error").classList.add("error-message");
-    return ;
+    return;
   }
 
+  var url = `/searchMovies?` + Object.entries(fields)
+          .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+          .join("&");
+
   //выполнение fetch-запроса к эндпоинту на сервере
-  fetch(`/searchMovies?movieTitle=${encodeURIComponent(movieTitle)}&movieGenre=${encodeURIComponent(movieGenre)}&movieYear=${encodeURIComponent(movieYear)}`)
+  fetch(url)
           .then(response => {
             if (response.status === 404) {
               console.log('No movies found');
@@ -175,7 +200,13 @@ document.getElementById("searchButton").addEventListener("click", function() {
               movies.forEach(movie => {
                 const movieJson = JSON.stringify(movie);
                 const url = `/personalMovie.html?movie=${encodeURIComponent(movieJson)}`;
-                window.open(url, '_blank');    //в новой вкладке
+                const link = document.createElement('a');
+                link.href = url;
+                link.target = '_blank';    //в новом окне
+                link.textContent = `${movie.alternativeName}`;
+                linksContainer.appendChild(link);
+                linksContainer.appendChild(document.createElement('br'));
+                linksContainer.appendChild(document.createElement('br'));
               });
             }
           })

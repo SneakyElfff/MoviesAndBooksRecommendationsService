@@ -127,8 +127,9 @@
 <button id="searchButton">Search</button>
 <div id="error"></div>
 
-<!-- Вывода информации о книге -->
-<div id="bookInfo"></div>
+<div id="linksContainer">
+  <!-- Здесь будут отображаться ссылки -->
+</div>
 
 <script>    //JavaScript
 document.getElementById("recommendationsButton").addEventListener("click", function() {
@@ -146,18 +147,15 @@ document.getElementById("accountButton").addEventListener("click", function() {
 document.getElementById("searchButton").addEventListener("click", function() {
   document.getElementById("error").textContent = ``;
 
+  var linksContainer = document.getElementById("linksContainer");
+  linksContainer.innerHTML = '';
+
   var bookTitle = document.getElementById("bookTitle").value;
   var authorName = document.getElementById("authorName").value;
   var bookGenre = document.getElementById("bookGenre").value;
 
-  if (bookTitle.trim() === "") {
-    document.getElementById("error").textContent = `Book title is empty. Please enter a title.`;
-    document.getElementById("error").classList.add("error-message");
-    return;
-  }
-
-  if (authorName.trim() === "") {
-    document.getElementById("error").textContent = document.getElementById("error").textContent + ` Author name is empty. Please enter a name.`;
+  if (bookTitle.trim() === "" && authorName.trim() === "" && bookGenre.trim() === "") {
+    document.getElementById("error").textContent = `All the fields are empty. Please fill in at least one.`;
     document.getElementById("error").classList.add("error-message");
     return;
   }
@@ -182,7 +180,13 @@ document.getElementById("searchButton").addEventListener("click", function() {
               books.forEach(book => {
                 const bookJson = JSON.stringify(book);
                 const url = `/personalBook.html?book=${encodeURIComponent(bookJson)}`;
-                window.open(url, '_blank');
+                const link = document.createElement('a');
+                link.href = url;
+                link.target = '_blank';    //в новом окне
+                link.textContent = `${book.title}`;
+                linksContainer.appendChild(link);
+                linksContainer.appendChild(document.createElement('br'));
+                linksContainer.appendChild(document.createElement('br'));
               });
             }
           })

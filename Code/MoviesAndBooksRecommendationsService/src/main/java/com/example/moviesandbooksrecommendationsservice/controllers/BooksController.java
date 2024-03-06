@@ -63,11 +63,7 @@ public class BooksController {
                                                    @RequestParam(required = false) String bookGenre) {
         RestTemplate template = new RestTemplate();
 
-        String url = GOOGLE_BOOKS_API_URL_MULTIPLE + bookTitle + "+intitle:" + bookTitle + "+inauthor:" + authorName;
-
-        if (bookGenre != "") {
-            url += "+subject:" + bookGenre;
-        }
+        String url = GOOGLE_BOOKS_API_URL_MULTIPLE + bookTitle + "+intitle:" + bookTitle + "+inauthor:" + authorName + "+subject:" + bookGenre;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-API-KEY", "AIzaSyCKmxvPEfqkhJObL5Byce24XmKvmTuo2lY");

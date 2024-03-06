@@ -7,14 +7,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.util.UriUtils;
+
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class MoviesController {
@@ -62,20 +68,22 @@ public class MoviesController {
     }
 
     @GetMapping("/searchMovies")
-    public ResponseEntity<List<Movie>> getMoviesInfo(@RequestParam String movieTitle,
-                                                     @RequestParam(required = false) String movieYear,
-                                                     @RequestParam(required = false) String movieGenre) {
+    public ResponseEntity<List<Movie>> getMoviesInfo(@RequestParam Map<String, String> params) {
         RestTemplate template = new RestTemplate();
 
-        String url;
-        if (movieYear != "" && movieGenre != "") {
-            url = KINOPOISK_API_URL_FILTER + "&year=" + movieYear + "&genres.name=" + movieGenre;
-        } else if (movieYear != "") {
-            url = KINOPOISK_API_URL_FILTER + "&year=" + movieYear;
-        } else if (movieGenre != "") {
-            url = KINOPOISK_API_URL_FILTER + "&genres.name=" + movieGenre;
+        StringBuilder url = new StringBuilder(KINOPOISK_API_URL_FILTER);
+
+        if (StringUtils.hasText(params.get("movieTitle"))) {
+            url = new StringBuilder(KINOPOISK_API_URL_MULTIPLE + params.get("movieTitle"));
         } else {
-            url = KINOPOISK_API_URL_MULTIPLE + movieTitle;
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+
+                if (!"movieTitle".equals(key) && StringUtils.hasText(value)) {
+                    url.append("&").append(key).append("=").append(value);
+                }
+            }
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -84,7 +92,7 @@ public class MoviesController {
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = template.exchange(url.toString(), HttpMethod.GET, entity, String.class);
 
         //преобразование JSON в список объектов Movie
         ObjectMapper objectMapper = new ObjectMapper();
