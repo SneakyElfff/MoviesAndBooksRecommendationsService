@@ -107,6 +107,8 @@ PostgreSQL стремится к максимальной совместимос
 
 # 2 Архитектура As Is
 
+В рамках первого Sprint Review были добавлены методы GetMoviesInfo и GetBooksInfo в классы MoviesController и BooksController соответственно.
+
 ![Диаграмма классов](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/blob/3e0c0d065013c2640141310ae67e6f4e4fb16153/Development/ClassDiagram.png)
 
 # 3 Вывод
