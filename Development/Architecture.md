@@ -103,6 +103,8 @@ PostgreSQL стремится к максимальной совместимос
 
 ## 1.6 Структурная схема приложения
 
+![Структурная схема приложения](https://github.com/SneakyElfff/MoviesAndBooksRecommendationsService/blob/5ace30a25d82a321c3c853799a0500b74116b80f/Diagrams/Pictures/Deployment.png)
+
 # 2 Архитектура As Is
 
 # 3 Вывод
