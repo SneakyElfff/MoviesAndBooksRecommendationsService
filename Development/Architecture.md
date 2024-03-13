@@ -116,12 +116,12 @@ PostgreSQL стремится к максимальной совместимос
 ## Сравнение архитектур "As is" и "To be"
 
 В ходе сравнения архитектур можно сделать вывод, что они совпадают.
-В архитектуре "To be" Web Server состоит из Application и DataBase. Application в своем составе содержит User Interface и Recommendation Service, DataBase - User Data Base. В приложении также используются два сторонних сервера, а именно Kinopoisk.ru Server (компонент Movies Data Base) и Books.Google.com Server (компонент Books Data Base). 
-В архитектуре "As is" Recommendation Service представлен MoviesController и BooksController, которые, в свою очередь, используют InterfaceKinopoisk и InterfaceGoogleBooks для получения информации о фильмах и книгах. User Data Base представлена в сервере User. 
+В архитектуре "To be" Web Server состоит из Application и Database. Application в своем составе содержит User Interface и Recommendation Service, Database - User Database. В приложении также используются два сторонних сервера, а именно Kinopoisk.ru Server (компонент Movies Data Base) и Books.Google.com Server (компонент Books Database). 
+В архитектуре "As is" Recommendation Service представлен MoviesController и BooksController, которые, в свою очередь, используют InterfaceKinopoisk и InterfaceGoogleBooks для получения информации о фильмах и книгах. User Database представлена в сервере User. 
 
 ## Пути улучшения архитектуры
 
-Для улучшения архитектуры следует руководствоваться принциипами проектирования, архитеектурными стилями, шаблонами и приемами проектирования.
+Для улучшения архитектуры следует руководствоваться принциипами проектирования, архитектурными стилями, шаблонами и приемами проектирования.
 
 ### Принципы проектирования
 
