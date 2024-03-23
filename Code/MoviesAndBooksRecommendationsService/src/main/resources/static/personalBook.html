@@ -5,10 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Movie Details</title>
   <style>
+    @font-face {
+      font-family: 'Abril Fatface';
+      src: url('/fonts/AbrilFatface-Regular.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'Abhaya Libre ExtraBold';
+      src: url('/fonts/AbhayaLibre-ExtraBold.ttf') format('truetype');
+    }
+
     body {
-      background: url("/images/background.jpg") center
-      no-repeat;
+      background: url("/images/background.jpg") center;
       -webkit-background-size: cover;
+      background-position: center top;
       background-size: cover;
       margin: 0;
       padding: 0;
@@ -18,29 +28,30 @@
       align-items: center;
       justify-content: flex-start;
       text-align: center;
-      font-family: 'American Typewriter', sans-serif;
+      font-family: 'Abril Fatface', sans-serif;
     }
 
     /* Заголовок */
     h1 {
-      margin-top: 5vh;
+      margin-top: 10vh;
       font-size: 3em;
+      letter-spacing: 2px;
+      color: #1E1E1E;
+      text-shadow:
+              -1px -1px 0 #000,
+              1px -1px 0 #000,
+              -1px 1px 0 #000,
+              1px 1px 0 #000;
     }
 
-    /* Первая разделительная линия */
-    .line1 {
-      width: 100%;
-      margin-top: 15px;
-      margin-bottom: 0;
-      border: 3px solid #000000;
-    }
-
-    /* Вторая разделительная линия */
-    .line2 {
-      width: 100%;
-      margin-top: 0;
-      margin-bottom: 10px;
-      border: 3px solid #000000;
+    .transparent-rectangle {
+      position: fixed;
+      margin-top: 22vh;
+      width: 1230px;
+      height: 70px;
+      right: 0;
+      background-color: #221A15;
+      opacity: 18%;
     }
 
     /* Изображение */
@@ -56,31 +67,36 @@
     }
 
     .button-container {
-      margin-top: 0;
+      margin-top: -50px;
       display: flex;
-      justify-content: space-between; /* Равномерное распределение пространства между элементами */
+      justify-content: space-between;
       width: 100%;
     }
 
     button {
       padding: 10px 70px;
-      font-size: 1.4em;
+      font-size: 2.5em;
       color: black;
+      border: none;
+      outline: none;
       background-color: transparent;
-      border-top-style: none;
-      border-right: 4px solid black;
-      border-bottom-style: none;
-      border-left: 4px solid black;
       border-radius: 0;
       cursor: pointer;
-      font-family: 'American Typewriter', sans-serif;
+      font-family: 'Abhaya Libre ExtraBold', sans-serif;
+    }
+
+    #moviesButton {
+      padding: 50px 100px;
+      margin-left: 285px;
     }
 
     #booksButton {
-      margin-left: -4px; /* убрать отступ между кнопками */
+      padding: 50px 100px;
+      margin-left: -4px;
     }
 
     #accountButton {
+      padding: 50px 100px;
       margin-left: auto;
     }
 
@@ -146,17 +162,15 @@
 
 <body>
 <div class="image-container">
-  <img src="images/LeftImage.png" alt="Film reel" style="position: relative; right: 380px; width:150px;">
-  <h1>Your cup of tea</h1>
-  <img src="images/RightImage.jpg" alt="Open book" style="position: relative; left: 380px; width:150px;">
+  <img src="images/cup-removebg.png" alt="Cup" style="position: relative; left:10px; width:150px;">
+  <h1>YOUR CUP OF TEA</h1>
 </div>
-<hr class="line1">
+<div class="transparent-rectangle"></div>
 <div class="button-container">
   <button id="moviesButton">Movies</button>
   <button id="booksButton">Books</button>
   <button id="accountButton">Account</button>
 </div>
-<hr class="line2">
 
 <div class="content-container">
   <div class="thumbnail">
