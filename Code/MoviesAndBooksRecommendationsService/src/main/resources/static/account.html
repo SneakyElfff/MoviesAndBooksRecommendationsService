@@ -211,35 +211,19 @@
     }
 
     function loadUserBooks() {
-        fetch("/getAuthorsList")
-            .then(response => response.json())
-            .then(data => {
-                const authorsList = document.getElementById("authorsList");
-                data.forEach(author => {
-                    const textItem = document.createElement("plaintext");
-                    textItem.textContent = author;
-                    textItem.style.fontSize="1em";
-                    textItem.style.fontFamily="American Typewriter, sans-serif";
-                    authorsList.appendChild(textItem);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-
         fetch("/getBooksList")
             .then(response => response.json())
             .then(data => {
                 const booksList = document.getElementById("booksList");
-                data.forEach((book, index) => {
+                for (const [book, isbn] of Object.entries(data)) {
                     const buttonItem = document.createElement("button");
                     buttonItem.style.border = "none";
-                    buttonItem.style.fontSize="1em";
-                    buttonItem.style.width="100%";
+                    buttonItem.style.fontSize = "1em";
+                    buttonItem.style.width = "100%";
                     buttonItem.textContent = book;
-                    buttonItem.addEventListener("click", function() {
 
-                        const author = document.getElementById("authorsList").children[index].textContent;
-
-                        fetch(`/searchBook?bookTitle=${encodeURIComponent(book)}&authorName=${encodeURIComponent(author)}`)
+                    buttonItem.addEventListener("click", function () {
+                        fetch(`/searchBook?bookTitle=${encodeURIComponent(book)}&isbn=${encodeURIComponent(isbn)}`)
                             .then(response => {
                                 if (response.status === 404) {
                                     console.log('No book found');
@@ -263,7 +247,7 @@
                             });
                     });
                     booksList.appendChild(buttonItem);
-                });
+                }
             })
             .catch(error => console.error('Error:', error));
     }

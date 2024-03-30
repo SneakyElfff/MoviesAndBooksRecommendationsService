@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Set;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -31,9 +32,9 @@ public class UserController {
     }
 
     @GetMapping("/addBook")
-    public ResponseEntity<String> addBook(@RequestParam String bookTitle, @RequestParam String bookAuthor, Authentication authentication) {
+    public ResponseEntity<String> addBook(@RequestParam String bookTitle, @RequestParam String bookIsbn, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            boolean added = userService.addBookToUserList(bookTitle, bookAuthor, authentication.getName());
+            boolean added = userService.addBookToUserList(bookTitle, bookIsbn, authentication.getName());
             if (added) {
                 return ResponseEntity.ok("Book added successfully");
             } else {
@@ -57,24 +58,12 @@ public class UserController {
     }
 
     @GetMapping("/getBooksList")
-    public ResponseEntity<Set<String>> getUserBooks(Authentication authentication) {
+    public ResponseEntity<Map<String, String>> getUserBooks(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
-            Set<String> books = userService.getUserBooks(username);
+            Map<String, String> books = userService.getUserBooks(username);
 
             return ResponseEntity.ok(books);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-    }
-
-    @GetMapping("/getAuthorsList")
-    public ResponseEntity<Set<String>> getUserAuthors(Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            Set<String> authors = userService.getUserBooksAuthors(username);
-
-            return ResponseEntity.ok(authors);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }

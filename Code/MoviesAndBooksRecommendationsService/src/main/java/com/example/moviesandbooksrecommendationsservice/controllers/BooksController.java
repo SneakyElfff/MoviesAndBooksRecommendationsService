@@ -25,10 +25,10 @@ public class BooksController {
     private static final String GOOGLE_BOOKS_API_URL_MULTIPLE = "https://www.googleapis.com/books/v1/volumes?maxResults=3&q=";
 
     @GetMapping("/searchBook")
-    public ResponseEntity<Book> getBookInfo(@RequestParam String bookTitle, @RequestParam(required = false) String authorName) {
+    public ResponseEntity<Book> getBookInfo(@RequestParam String bookTitle, @RequestParam(required = false) String isbn) {
         RestTemplate template = new RestTemplate();
 
-        String url = GOOGLE_BOOKS_API_URL + bookTitle + "+intitle:" + bookTitle + "+inauthor:" + authorName;
+        String url = GOOGLE_BOOKS_API_URL + bookTitle + "+intitle:" + bookTitle + "+isbn:" + isbn;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-API-KEY", "AIzaSyCKmxvPEfqkhJObL5Byce24XmKvmTuo2lY");

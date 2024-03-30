@@ -2,7 +2,10 @@ package com.example.moviesandbooksrecommendationsservice.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -25,11 +28,11 @@ public class User {
     @Column(name = "book_list", unique = true)
     private Set<String> bookList = new HashSet<>();
 
-    @Getter
     @ElementCollection
-    @CollectionTable(name = "user_authors_list", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "authors_list")
-    private Set<String> bookAuthors = new HashSet<>();
+    @CollectionTable(name = "user_book_list", joinColumns = @JoinColumn(name = "user_id"))
+    @MapKeyColumn(name = "book_list")
+    @Column(name = "isbn_list")
+    private Map<String, String> bookIsbnMap = new HashMap<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -43,11 +46,11 @@ public class User {
         this.movieList = movieList;
     }
 
-    public void setBookList(Set<String> bookList) {
-        this.bookList = bookList;
+    public Map<String, String> getBookIsbnMap() {
+        return bookIsbnMap;
     }
 
-    public void setBookAuthors(Set<String> bookAuthors) {
-        this.bookAuthors = bookAuthors;
+    public void setBookIsbnMap(Map<String, String> bookIsbnMap) {
+        this.bookIsbnMap = bookIsbnMap;
     }
 }

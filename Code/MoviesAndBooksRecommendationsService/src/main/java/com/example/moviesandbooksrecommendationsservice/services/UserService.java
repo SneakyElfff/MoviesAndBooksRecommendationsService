@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -35,21 +37,18 @@ public class UserService {
     }
 
     @Transactional
-    public boolean addBookToUserList(String bookTitle, String bookAuthor, String username) {
+    public boolean addBookToUserList(String bookTitle, String bookIsbn, String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             user = new User();
             user.setUsername(username);
         }
 
-        Set<String> bookList = user.getBookList();
-        Set<String> bookAuthors = user.getBookAuthors();
+        Map<String, String> bookIsbnMap = user.getBookIsbnMap();
 
-        if (!bookList.contains(bookTitle)) {
-            bookList.add(bookTitle);
-            bookAuthors.add(bookAuthor);
+        if (!bookIsbnMap.containsKey(bookTitle)) {
+            bookIsbnMap.put(bookTitle, bookIsbn);
             userRepository.save(user);
-
             return true;
         }
 
@@ -64,15 +63,9 @@ public class UserService {
     }
 
     @Transactional
-    public Set<String> getUserBooks(String username) {
+    public Map<String, String> getUserBooks(String username) {
         User user = userRepository.findByUsername(username);
 
-        return user != null ? new HashSet<>(user.getBookList()) : Collections.emptySet();
+        return user != null ? new HashMap<>(user.getBookIsbnMap()) : Collections.emptyMap();
     }
-
-    @Transactional
-    public Set<String> getUserBooksAuthors(String username) {
-        User user = userRepository.findByUsername(username);
-
-        return user != null ? new HashSet<>(user.getBookAuthors()) : Collections.emptySet();    }
 }
