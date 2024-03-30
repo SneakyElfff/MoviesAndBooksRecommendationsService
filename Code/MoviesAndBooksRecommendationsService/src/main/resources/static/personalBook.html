@@ -183,6 +183,7 @@
     <div id="publishedDate"></div>
     <div id="categories"></div>
     <div id="publisher"></div>
+    <div id="isbn"></div>
     <div id="pageCount"></div>
     <div id="description"></div>
     <div id="maturityRating"></div>
@@ -213,6 +214,7 @@
     var publishedDateElement = document.getElementById("publishedDate");
     var categoriesElement = document.getElementById("categories");
     var publisherElement = document.getElementById("publisher");
+    var isbnElement = document.getElementById("isbn");
     var maturityRatingElement = document.getElementById("maturityRating");
     var pageCountElement = document.getElementById("pageCount");
     var descriptionElement = document.getElementById("description");
@@ -222,6 +224,7 @@
     titleElement.textContent = `Title: ${book.title}`;
     authorsElement.textContent = `Authors: ${book.authors.join(", ")}`;
     publisherElement.textContent = `Publisher: ${book.publisher}`;
+    isbnElement.textContent = `ISBN: ${book.isbn}`;
     publishedDateElement.textContent = `Published: ${book.publishedDate}`;
     categoriesElement.textContent = `Categories:  ${book.categories.join(", ")}`;
     maturityRatingElement.textContent = `Maturity rating: ${book.maturityRating}`;
@@ -244,11 +247,11 @@
     var titleElement = document.getElementById("title");
     var bookTitle = titleElement.textContent.replace("Title: ", "");
 
-    var authorsElement = document.getElementById("authors");
-    var bookAuthor = authorsElement.textContent.replace("Authors: ", "");
+    var isbnElement = document.getElementById("isbn");
+    var bookIsbn = isbnElement.textContent.replace("ISBN: ", "");
 
     //отправить запрос на сервер для добавления названия книги в список пользователя
-    fetch(`/addBook?bookTitle=${encodeURIComponent(bookTitle)}&bookAuthor=${encodeURIComponent(bookAuthor)}`)
+    fetch(`/addBook?bookTitle=${encodeURIComponent(bookTitle)}&bookIsbn=${encodeURIComponent(bookIsbn)}`)
             .then(response => {
               if (response.status === 400) {
                 console.log('This book already exists');

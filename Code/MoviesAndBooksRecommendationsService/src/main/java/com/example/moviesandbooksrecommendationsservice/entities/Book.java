@@ -1,7 +1,9 @@
 package com.example.moviesandbooksrecommendationsservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Getter;
 import java.util.List;
 
@@ -34,6 +36,12 @@ public class Book {
     @JsonProperty("imageLinks")
     private Thumbnail thumbnail;
 
+    @JsonProperty("industryIdentifiers")
+    private List<IndustryIdentifier> industryIdentifiers;
+
+    @JsonProperty("isbn")
+    private String isbn;
+
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Thumbnail {
@@ -43,5 +51,27 @@ public class Book {
         public void setThumbnail(String thumbnail) {
             this.thumbnail = thumbnail;
         }
+    }
+
+    @Getter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class IndustryIdentifier {
+        @JsonProperty("type")
+        private String type;
+
+        @JsonProperty("identifier")
+        private String identifier;
+    }
+
+    @JsonSetter("industryIdentifiers")
+    public void setIsbn(List<IndustryIdentifier> industryIdentifiers) {
+        for (IndustryIdentifier identifier : industryIdentifiers) {
+            if ("ISBN_13".equals(identifier.getType())) {
+                this.isbn = identifier.getIdentifier();
+                return;
+            }
+        }
+
+        this.isbn = null;
     }
 }
