@@ -31,6 +31,20 @@ public class UserController {
         }
     }
 
+    @GetMapping("/deleteMovie")
+    public ResponseEntity<String> deleteMovie(@RequestParam String movieTitle, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            boolean deleted = userService.deleteMovieFromUserList(movieTitle, authentication.getName());
+            if (deleted) {
+                return ResponseEntity.ok("Movie deleted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This movie is not in the collection");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
+    }
+
     @GetMapping("/addBook")
     public ResponseEntity<String> addBook(@RequestParam String bookTitle, @RequestParam String bookIsbn, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
@@ -39,6 +53,20 @@ public class UserController {
                 return ResponseEntity.ok("Book added successfully");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This book is already in the collection");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
+    }
+
+    @GetMapping("/deleteBook")
+    public ResponseEntity<String> deleteBook(@RequestParam String bookTitle, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            boolean deleted = userService.deleteBookFromUserList(bookTitle, authentication.getName());
+            if (deleted) {
+                return ResponseEntity.ok("Book deleted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This book is not in the collection");
             }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");

@@ -119,12 +119,6 @@
             font-family: 'American Typewriter', sans-serif;
             font-size: 1.2em;
         }
-
-        #authorsList {
-            margin-top: -50px;
-            margin-left: 270px;
-        }
-
     </style>
 </head>
 
@@ -155,11 +149,6 @@
                 <div id="booksList"></div>
             </div>
         </td>
-        <td style="width: 25%;">
-            <div class="likedBooks">
-                <div id="authorsList"></div>
-            </div>
-        </td>
     </tr>
 </table>
 
@@ -176,10 +165,21 @@
                 const moviesList = document.getElementById("moviesList");
                 data.forEach(movie => {
                     const buttonItem = document.createElement("button");
+                    const deleteButton = document.createElement("button");
+
                     buttonItem.style.border = "none";
-                    buttonItem.style.fontSize="1em";
-                    buttonItem.style.width="100%";
+                    buttonItem.style.fontSize = "1em";
+                    buttonItem.style.width = "calc(100% - 40px)";
                     buttonItem.textContent = movie;
+
+                    deleteButton.textContent = "Delete";
+                    deleteButton.style.padding = "5px";
+                    deleteButton.style.fontSize = "0.8em";
+                    deleteButton.style.backgroundColor = "red";
+                    deleteButton.style.color = "white";
+                    deleteButton.style.border = "none";
+                    deleteButton.style.cursor = "pointer";
+
                     buttonItem.addEventListener("click", function() {
                         fetch(`/searchMovie?movieTitle=${encodeURIComponent(movie)}`)
                             .then(response => {
@@ -204,7 +204,24 @@
                                 console.error('Error:', error);
                             });
                     });
+
+                    deleteButton.addEventListener("click", function () {
+                        fetch(`/deleteMovie?movieTitle=${encodeURIComponent(movie)}`)
+                            .then(response => {
+                                if (response.ok) {
+                                    moviesList.removeChild(buttonItem);
+                                    moviesList.removeChild(deleteButton);
+                                } else {
+                                    console.error('Error: Unable to delete book');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    });
+
                     moviesList.appendChild(buttonItem);
+                    moviesList.appendChild(deleteButton);
                 });
             })
             .catch(error => console.error('Error:', error));
@@ -217,10 +234,20 @@
                 const booksList = document.getElementById("booksList");
                 for (const [book, isbn] of Object.entries(data)) {
                     const buttonItem = document.createElement("button");
+                    const deleteButton = document.createElement("button");
+
                     buttonItem.style.border = "none";
                     buttonItem.style.fontSize = "1em";
-                    buttonItem.style.width = "100%";
+                    buttonItem.style.width = "calc(100% - 40px)";
                     buttonItem.textContent = book;
+
+                    deleteButton.textContent = "Delete";
+                    deleteButton.style.padding = "5px";
+                    deleteButton.style.fontSize = "0.8em";
+                    deleteButton.style.backgroundColor = "red";
+                    deleteButton.style.color = "white";
+                    deleteButton.style.border = "none";
+                    deleteButton.style.cursor = "pointer";
 
                     buttonItem.addEventListener("click", function () {
                         fetch(`/searchBook?bookTitle=${encodeURIComponent(book)}&isbn=${encodeURIComponent(isbn)}`)
@@ -246,7 +273,24 @@
                                 console.error('Error:', error);
                             });
                     });
+
+                    deleteButton.addEventListener("click", function () {
+                        fetch(`/deleteBook?bookTitle=${encodeURIComponent(book)}`)
+                            .then(response => {
+                                if (response.ok) {
+                                    booksList.removeChild(buttonItem);
+                                    booksList.removeChild(deleteButton);
+                                } else {
+                                    console.error('Error: Unable to delete book');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    });
+
                     booksList.appendChild(buttonItem);
+                    booksList.appendChild(deleteButton);
                 }
             })
             .catch(error => console.error('Error:', error));

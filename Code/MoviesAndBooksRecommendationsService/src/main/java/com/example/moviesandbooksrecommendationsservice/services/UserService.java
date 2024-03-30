@@ -37,6 +37,25 @@ public class UserService {
     }
 
     @Transactional
+    public boolean deleteMovieFromUserList(String movieTitle, String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            user = new User();
+            user.setUsername(username);
+        }
+
+        Set<String> movieList = user.getMovieList();
+        if (movieList.contains(movieTitle)) {
+            movieList.remove(movieTitle);
+            userRepository.save(user);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @Transactional
     public boolean addBookToUserList(String bookTitle, String bookIsbn, String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
@@ -48,6 +67,25 @@ public class UserService {
 
         if (!bookIsbnMap.containsKey(bookTitle)) {
             bookIsbnMap.put(bookTitle, bookIsbn);
+            userRepository.save(user);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Transactional
+    public boolean deleteBookFromUserList(String bookTitle, String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            user = new User();
+            user.setUsername(username);
+        }
+
+        Map<String, String> bookIsbnMap = user.getBookIsbnMap();
+
+        if (bookIsbnMap.containsKey(bookTitle)) {
+            bookIsbnMap.remove(bookTitle);
             userRepository.save(user);
             return true;
         }
